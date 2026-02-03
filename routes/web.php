@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminQrController;
+use App\Http\Controllers\CheckInController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AttendanceExport;
@@ -11,22 +14,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/attendance/wfh', [AttendanceController::class, 'wfhForm']);
-    Route::post('/attendance/wfh', [AttendanceController::class, 'storeWfh']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/attendance/wfh', [AttendanceController::class, 'wfhForm'])
+        ->name('attendance.wfh.form');
+
+    Route::post('/attendance/wfh', [AttendanceController::class, 'storeWfh'])
+        ->name('attendance.wfh.store');
+
+    Route::get('/attendance/wfo', [AttendanceController::class, 'wfoForm'])
+        ->name('attendance.wfo.form');
+
+    Route::post('/attendance/wfo', [AttendanceController::class, 'storeWfo'])
+        ->name('attendance.wfo.store');
+
+    Route::post('/attendance/checkout', [AttendanceController::class, 'checkOut'])
+        ->name('attendance.checkout');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard']);
     Route::get('/attendance', [AdminController::class, 'attendance']);
     Route::get('/attendance/{id}', [AdminController::class, 'show']);
+    Route::get('/qr', [AdminQrController::class, 'index'])->name('admin.qr.index');
+    Route::post('/qr/generate', [AdminQrController::class, 'generate'])->name('admin.qr.generate');
 });
 
 Route::middleware(['auth', 'admin'])->get('/admin/export', function () {
@@ -39,4 +57,4 @@ Route::middleware(['auth'])->post(
 );
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

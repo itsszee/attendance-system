@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('office_qr_codes', function (Blueprint $table) {
             $table->id();
             $table->string('code');
+            $table->string('qr_image_path')->nullable();
             $table->dateTime('valid_from');
             $table->dateTime('valid_until');
             $table->boolean('is_active')->default(true);

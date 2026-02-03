@@ -1,37 +1,52 @@
-@if($alreadyAbsent)
-    <div class="alert alert-info">
-        Kamu sudah absen hari ini ✅
-    </div>
+<!DOCTYPE html>
+<html>
 
-    @if($attendance->check_out_at)
-        <p>Check-out: {{ $attendance->check_out_at }}</p>
-    @else
-        <form method="POST" action="/attendance/check-out">
-            @csrf
-            <button type="submit">
-                Check-Out
-            </button>
-        </form>
+<head>
+    <title>WFH Check-in</title>
+</head>
+
+<body>
+
+    <h2>WFH Check-in</h2>
+
+    <form method="POST" action="{{ route('attendance.wfh.store') }}" enctype="multipart/form-data">
+        @csrf
+
+        <label>Task Hari Ini</label><br>
+        <textarea name="task" required></textarea><br><br>
+
+        <label>Selfie</label><br>
+        <input type="file" name="selfie" accept="image/*" required><br><br>
+
+        <input type="hidden" name="latitude" id="lat">
+        <input type="hidden" name="longitude" id="lng">
+
+        <button type="submit">Check-in</button>
+    </form>
+
+    <script>
+        // Ambil posisi pengguna dan isi hidden input
+        navigator.geolocation.getCurrentPosition(
+            function(pos) {
+                document.getElementById('lat').value = pos.coords.latitude;
+                document.getElementById('lng').value = pos.coords.longitude;
+            },
+            function(error) {
+                alert('Lokasi wajib diaktifkan untuk check-in WFH');
+            },
+            { enableHighAccuracy: true }
+        );
+    </script>
+
+    @if (session('error'))
+        <p style="color:red">{{ session('error') }}</p>
     @endif
-@else
 
-<form method="POST" enctype="multipart/form-data">
-    @csrf
+    @if (session('success'))
+        <p style="color:green">{{ session('success') }}</p>
+    @endif
 
-    <textarea name="task" placeholder="Task hari ini" required></textarea>
 
-    <input type="hidden" name="latitude" id="lat">
-    <input type="hidden" name="longitude" id="lng">
+</body>
 
-    <input type="file" name="selfie" accept="image/*" required>
-
-    <button type="submit">Absen WFH</button>
-</form>
-@endif
-
-<script>
-navigator.geolocation.getCurrentPosition(pos => {
-    document.getElementById('lat').value = pos.coords.latitude;
-    document.getElementById('lng').value = pos.coords.longitude;
-});
-</script>
+</html>

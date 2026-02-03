@@ -8,6 +8,7 @@ class OfficeQrCode extends Model
 {
     protected $fillable = [
         'code',
+        'qr_image_path',
         'valid_from',
         'valid_until',
         'is_active',
