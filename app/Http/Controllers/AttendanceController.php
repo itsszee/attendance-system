@@ -48,7 +48,13 @@ class AttendanceController extends Controller
             'mode' => 'WFH',
             'status' => now()->format('H:i') <= '09:00' ? 'on_time' : 'late',
             'approval_status' => 'pending',
+            'task' => $request->task,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'selfie_path' => $photoPath,
         ]);
+
+
 
 
         return redirect()->route('dashboard')->with('success', 'WFH Check-in berhasil');
@@ -96,7 +102,6 @@ class AttendanceController extends Controller
 
     public function storeWfo(Request $request)
     {
-
         $exists = Attendance::where('user_id', Auth::id())
             ->whereDate('date', now())
             ->exists();
@@ -111,7 +116,6 @@ class AttendanceController extends Controller
             'longitude' => 'required',
         ]);
 
-
         $qr = OfficeQrCode::where('code', $request->qr_code)
             ->where('is_active', true)
             ->where('valid_from', '<=', now())
@@ -121,7 +125,6 @@ class AttendanceController extends Controller
         if (!$qr) {
             return back()->with('error', 'QR tidak valid / kadaluarsa');
         }
-
 
         $officeLat = -6.8268;
         $officeLng = 107.1370;
@@ -144,6 +147,8 @@ class AttendanceController extends Controller
             'mode' => 'WFO',
             'status' => now()->format('H:i') <= '09:00' ? 'on_time' : 'late',
             'approval_status' => 'approved',
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Absen WFO berhasil');

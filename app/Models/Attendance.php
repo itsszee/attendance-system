@@ -14,6 +14,10 @@ class Attendance extends Model
         'check_out_at',
         'status',
         'approval_status',
+        'task',
+        'latitude',
+        'longitude',
+        'selfie_path',
     ];
 
 

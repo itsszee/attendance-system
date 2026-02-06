@@ -14,15 +14,35 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Guest routes (login & register)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
+        ->name('login');
+    
+    Route::post('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
+    
+    Route::get('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])
+        ->name('register');
+    
+    Route::post('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
+});
+
+// Auth routes (logout)
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+});
 
 Route::middleware('auth')->get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
-
 Route::middleware('auth')->group(function () {
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    // Attendance routes
     Route::get('/attendance/wfh', [AttendanceController::class, 'wfhForm'])
         ->name('attendance.wfh.form');
 
@@ -39,22 +59,21 @@ Route::middleware('auth')->group(function () {
         ->name('attendance.checkout');
 });
 
+// Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard']);
-    Route::get('/attendance', [AdminController::class, 'attendance']);
-    Route::get('/attendance/{id}', [AdminController::class, 'show']);
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    
+    Route::get('/attendance', [AdminController::class, 'attendance'])->name('admin.attendance.index');
+    
+    Route::get('/attendance/{id}', [AdminController::class, 'show'])->name('admin.attendance.show');
+    
     Route::get('/qr', [AdminQrController::class, 'index'])->name('admin.qr.index');
     Route::post('/qr/generate', [AdminQrController::class, 'generate'])->name('admin.qr.generate');
+    
+    Route::get('/export', function () {
+        return Excel::download(new AttendanceExport, 'attendance.xlsx');
+    })->name('admin.export'); 
 });
-
-Route::middleware(['auth', 'admin'])->get('/admin/export', function () {
-    return Excel::download(new AttendanceExport, 'attendance.xlsx');
-});
-
-Route::middleware(['auth'])->post(
-    '/attendance/check-out',
-    [AttendanceController::class, 'checkOut']
-);
 
 
 require __DIR__ . '/auth.php';

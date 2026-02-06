@@ -19,7 +19,7 @@
                     <span style="color:red; font-weight:bold;">⚠ Terlambat</span>
                 @endif
             </td>
-            <td><a href="/admin/attendance/{{ $a->id }}">Detail</a></td>
+            <td><a href="{{ route('admin.attendance.show', $a->id) }}">Detail</a></td>
         </tr>
     @endforeach
 </table>

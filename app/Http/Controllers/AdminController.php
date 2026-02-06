@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\User;
@@ -29,9 +30,11 @@ class AdminController extends Controller
         return view('admin.attendance.index', compact('attendances'));
     }
 
+    // AdminAttendanceController.php
     public function show($id)
     {
         $attendance = Attendance::with('user')->findOrFail($id);
+
         return view('admin.attendance.show', compact('attendance'));
     }
 }
