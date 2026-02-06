@@ -10,15 +10,22 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $today = now()->toDateString();
+        // Stats untuk admin
+        $stats = [
+            'total_users' => User::where('role', 'user')->count(),
+            'today_attendance' => Attendance::whereDate('date', now())->count(),
+            'wfh_today' => Attendance::whereDate('date', now())->where('mode', 'WFH')->count(),
+            'wfo_today' => Attendance::whereDate('date', now())->where('mode', 'WFO')->count(),
+            'late_today' => Attendance::whereDate('date', now())->where('status', 'late')->count(),
+        ];
 
-        return view('admin.dashboard', [
-            'hadir' => Attendance::whereDate('date', $today)->count(),
-            'late' => Attendance::where('status', 'late')->whereDate('date', $today)->count(),
-            'belum_absen' => User::whereDoesntHave('attendances', function ($q) use ($today) {
-                $q->whereDate('date', $today);
-            })->count(),
-        ]);
+        // Recent attendance
+        $recentAttendance = Attendance::with('user')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'recentAttendance'));
     }
 
     public function attendance()

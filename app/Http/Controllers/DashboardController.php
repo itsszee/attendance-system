@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Attendance;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -13,9 +12,12 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
         $attendanceToday = Attendance::where('user_id', $user->id)
-            ->whereDate('date', Carbon::today())
+            ->whereDate('date', now())
             ->first();
 
         return view('dashboard', compact('attendanceToday'));
