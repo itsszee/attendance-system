@@ -18,12 +18,12 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
         ->name('login');
-    
+
     Route::post('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
-    
+
     Route::get('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])
         ->name('register');
-    
+
     Route::post('/register', [App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
 });
 
@@ -62,17 +62,18 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    
+
     Route::get('/attendance', [AdminController::class, 'attendance'])->name('admin.attendance.index');
-    
     Route::get('/attendance/{id}', [AdminController::class, 'show'])->name('admin.attendance.show');
-    
     Route::get('/qr', [AdminQrController::class, 'index'])->name('admin.qr.index');
     Route::post('/qr/generate', [AdminQrController::class, 'generate'])->name('admin.qr.generate');
-    
+    Route::post('/qr/start-auto', [AdminQrController::class, 'startAutoGenerate'])->name('admin.qr.start');
+    Route::post('/qr/stop-auto', [AdminQrController::class, 'stopAutoGenerate'])->name('admin.qr.stop');
+    Route::get('/qr/active', [AdminQrController::class, 'getActiveQr'])->name('admin.qr.active');
+
     Route::get('/export', function () {
         return Excel::download(new AttendanceExport, 'attendance.xlsx');
-    })->name('admin.export'); 
+    })->name('admin.export');
 });
 
 

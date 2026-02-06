@@ -13,12 +13,14 @@ class OfficeQrCode extends Model
         'valid_until',
         'is_active',
         'created_by',
+        'auto_generate',
     ];
 
     protected $casts = [
         'valid_from' => 'datetime',
         'valid_until' => 'datetime',
         'is_active' => 'boolean',
+        'auto_generate' => 'boolean',
     ];
 
     public function creator()
