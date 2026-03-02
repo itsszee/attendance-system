@@ -96,7 +96,7 @@
 @endif
 
 <br>
-<a href="{{ route('admin.attendance.index') }}">← Kembali</a>
+<a href="{{ route('admin.dashboard') }}">← Kembali</a>
 
 </body>
 </html>

@@ -15,6 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                    @if(Auth::check() && Auth::user()->role === 'admin')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            {{ __('👥 Kelola User') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('karyawan.index')" :active="request()->routeIs('karyawan.*')">
+                            {{ __('👔 Kelola Karyawan') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +80,16 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if(Auth::check() && Auth::user()->role === 'admin')
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                    {{ __('👥 Kelola User') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('karyawan.index')" :active="request()->routeIs('karyawan.*')">
+                    {{ __('👔 Kelola Karyawan') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

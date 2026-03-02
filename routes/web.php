@@ -4,8 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminQrController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocationSettingController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AttendanceExport;
@@ -74,6 +77,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/export', function () {
         return Excel::download(new AttendanceExport, 'attendance.xlsx');
     })->name('admin.export');
+});
+
+// Admin CRUD User, Karyawan & lokasi
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::resource('users', UserController::class);
+    Route::resource('karyawan', KaryawanController::class);
+    Route::resource('location_settings', LocationSettingController::class)->except(['show']);
 });
 
 

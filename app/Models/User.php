@@ -15,6 +15,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     protected $hidden = [
@@ -31,6 +32,17 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function getStatusBadgeAttribute()
+    {
+        $roles = [
+            'admin' => '<span class="badge bg-danger">Admin</span>',
+            'karyawan' => '<span class="badge bg-primary">Karyawan</span>',
+            'user' => '<span class="badge bg-secondary">User</span>',
+        ];
+        
+        return $roles[$this->role] ?? '<span class="badge bg-secondary">User</span>';
     }
 
     

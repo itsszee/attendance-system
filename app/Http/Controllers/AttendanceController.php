@@ -94,9 +94,13 @@ class AttendanceController extends Controller
             return redirect()->route('dashboard')->with('error', 'Kamu sudah absen hari ini');
         }
 
+        // get location setting (use first available)
+        $location = \App\Models\LocationSetting::first();
+
         return view('attendance.wfo', [
             'attendance' => $attendance,
-            'alreadyAbsent' => (bool) $attendance
+            'alreadyAbsent' => (bool) $attendance,
+            'location' => $location,
         ]);
     }
 
@@ -126,9 +130,19 @@ class AttendanceController extends Controller
             return back()->with('error', 'QR tidak valid / kadaluarsa');
         }
 
-        $officeLat = -6.8268;
-        $officeLng = 107.1370;
-        $maxRadius = 100;
+        // check against configured location setting
+        $location = \App\Models\LocationSetting::first();
+
+        if ($location) {
+            $officeLat = $location->latitude;
+            $officeLng = $location->longitude;
+            $maxRadius = $location->radius;
+        } else {
+            // fallback to previous hardcoded values
+            $officeLat = -6.8268;
+            $officeLng = 107.1370;
+            $maxRadius = 100;
+        }
 
         if (!$this->withinRadius(
             $request->latitude,

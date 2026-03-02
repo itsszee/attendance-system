@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance System - Welcome</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -151,38 +152,40 @@
 <body>
 
     <div class="container">
-        <div class="logo">📋</div>
+        <div class="logo">
+            <i class="fas fa-clipboard-check"></i>
+        </div>
         <h1>Attendance System</h1>
         <p class="subtitle">Sistem absensi modern untuk WFH & WFO</p>
 
         <div class="features">
             <div class="feature">
-                <span class="feature-icon">🏠</span>
+                <span class="feature-icon"><i class="fas fa-home"></i></span>
                 <span>Work From Home</span>
             </div>
             <div class="feature">
-                <span class="feature-icon">🏢</span>
+                <span class="feature-icon"><i class="fas fa-building"></i></span>
                 <span>Work From Office</span>
             </div>
             <div class="feature">
-                <span class="feature-icon">📸</span>
+                <span class="feature-icon"><i class="fas fa-camera"></i></span>
                 <span>Selfie Check-in</span>
             </div>
             <div class="feature">
-                <span class="feature-icon">🔲</span>
+                <span class="feature-icon"><i class="fas fa-qrcode"></i></span>
                 <span>QR Code Scan</span>
             </div>
         </div>
 
         <div class="buttons">
             <a href="{{ route('login') }}" class="btn btn-primary">
-                Login to Dashboard
+                <i class="fas fa-sign-in-alt"></i> Login to Dashboard
             </a>
             
             <div class="divider">atau</div>
             
             <a href="{{ route('register') }}" class="btn btn-secondary">
-                Create New Account
+                <i class="fas fa-user-plus"></i> Create New Account
             </a>
         </div>
     </div>
