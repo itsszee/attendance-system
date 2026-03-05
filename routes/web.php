@@ -9,6 +9,7 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationSettingController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AttendanceExport;
@@ -84,6 +85,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('karyawan', KaryawanController::class);
     Route::resource('location_settings', LocationSettingController::class)->except(['show']);
+});
+
+// Google OAuth routes
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+    Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 });
 
 

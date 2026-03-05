@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Register - Attendance System</title>
+    <title>{{ $title ?? 'Authentication' }} - Attendance System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -24,6 +24,7 @@
             overflow: hidden;
         }
 
+        /* Animated Background Circles */
         .bg-circle {
             position: absolute;
             border-radius: 50%;
@@ -75,8 +76,14 @@
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .logo-section {
@@ -121,11 +128,43 @@
             border-radius: 12px;
             margin-bottom: 20px;
             font-size: 14px;
+            animation: shake 0.4s;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .alert i {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
         .alert ul {
-            margin: 8px 0 0 20px;
-            padding: 0;
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .alert li {
+            margin: 4px 0;
+        }
+
+        .success-alert {
+            background: #efe;
+            border: 1px solid #cfc;
+            color: #3c3;
+        }
+
+        .info-alert {
+            background: #eef;
+            border: 1px solid #ccf;
+            color: #33c;
         }
 
         .form-group {
@@ -140,9 +179,24 @@
             margin-bottom: 8px;
         }
 
-        input {
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
             width: 100%;
-            padding: 14px 16px;
+            padding: 14px 16px 14px 48px;
             border: 2px solid #e0e0e0;
             border-radius: 12px;
             font-size: 15px;
@@ -150,18 +204,20 @@
             background: #fafafa;
         }
 
-        input:focus {
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
             outline: none;
             border-color: #667eea;
             background: white;
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
-        small {
+        .form-group small {
             display: block;
+            margin-top: 6px;
             color: #999;
-            font-size: 13px;
-            margin-top: 4px;
+            font-size: 12px;
         }
 
         .checkbox-wrapper {
@@ -185,7 +241,6 @@
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
-            line-height: 1.4;
         }
 
         .checkbox-wrapper a {
@@ -220,6 +275,10 @@
             box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
         }
 
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
         .btn-secondary {
             width: 100%;
             padding: 14px;
@@ -235,7 +294,6 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            text-decoration: none;
         }
 
         .btn-secondary:hover {
@@ -279,8 +337,6 @@
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
-            display: block;
-            margin: 8px 0;
         }
 
         .action-link a:hover {
@@ -291,6 +347,7 @@
             .auth-container {
                 padding: 40px 30px;
             }
+
             h1 {
                 font-size: 24px;
             }
@@ -305,68 +362,13 @@
     <div class="auth-container">
         <div class="logo-section">
             <div class="logo-icon">
-                <i class="fas fa-user-plus"></i>
+                {{ $icon ?? '<i class="fas fa-clipboard-check"></i>' }}
             </div>
-            <h1>Create Account</h1>
-            <p class="subtitle">Join Attendance System today</p>
+            <h1>{{ $title ?? 'Authentication' }}</h1>
+            <p class="subtitle">{{ $subtitle ?? 'Attendance System' }}</p>
         </div>
 
-        @if($errors->any())
-            <div class="alert">
-                <strong>Please fix the following errors:</strong>
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('register') }}" method="post">
-            @csrf
-            
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your full name" value="{{ old('name') }}" required autofocus>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" value="{{ old('email') }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Create a strong password" required>
-                <small>Must be at least 8 characters</small>
-            </div>
-
-            <div class="form-group">
-                <label for="password_confirmation">Confirm Password</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Re-enter your password" required>
-            </div>
-
-            <div class="checkbox-wrapper">
-                <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                <label for="agreeTerms">
-                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-                </label>
-            </div>
-
-            <button type="submit" class="btn-primary">
-                <i class="fas fa-user-check"></i> Create Account
-            </button>
-        </form>
-
-        <div class="divider">or</div>
-
-        <a href="{{ route('auth.google') }}" class="btn-secondary">
-            <i class="fab fa-google"></i> Sign up with Google
-        </a>
-
-        <div class="action-link">
-            Already have an account? <a href="{{ route('login') }}">Sign in instead</a>
-        </div>
+        {{ $slot }}
     </div>
 </body>
 </html>
