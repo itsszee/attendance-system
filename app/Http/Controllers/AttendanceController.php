@@ -41,12 +41,20 @@ class AttendanceController extends Controller
 
         $photoPath = $request->file('selfie')->store('selfies', 'public');
 
+        // Determine status based on assigned shift (fall back to 09:00 if none)
+        $user = Auth::user();
+        $shiftTime = '09:00';
+        if ($user && $user->karyawan && $user->karyawan->shift) {
+            $shiftTime = $user->karyawan->shift->start_time->format('H:i');
+        }
+        $status = now()->format('H:i') <= $shiftTime ? 'on_time' : 'late';
+
         Attendance::create([
             'user_id' => Auth::id(),
             'date' => now()->toDateString(),
             'check_in_at' => now(),
             'mode' => 'WFH',
-            'status' => now()->format('H:i') <= '09:00' ? 'on_time' : 'late',
+            'status' => $status,
             'approval_status' => 'pending',
             'task' => $request->task,
             'latitude' => $request->latitude,
@@ -154,12 +162,20 @@ class AttendanceController extends Controller
             return back()->with('error', 'Kamu di luar area kantor');
         }
 
+        // Determine status based on assigned shift (default 09:00)
+        $user = Auth::user();
+        $shiftTime = '09:00';
+        if ($user && $user->karyawan && $user->karyawan->shift) {
+            $shiftTime = $user->karyawan->shift->start_time->format('H:i');
+        }
+        $status = now()->format('H:i') <= $shiftTime ? 'on_time' : 'late';
+
         Attendance::create([
             'user_id' => Auth::id(),
             'date' => now()->toDateString(),
             'check_in_at' => now(),
             'mode' => 'WFO',
-            'status' => now()->format('H:i') <= '09:00' ? 'on_time' : 'late',
+            'status' => $status,
             'approval_status' => 'approved',
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,

@@ -1,18 +1,19 @@
 @extends('layouts.admin')
 
-@section('title', 'Attendance List')
-@section('page-title', 'Attendance')
+@section('title', 'Kelola Kehadiran')
+
+@section('page-title', 'Kelola Kehadiran')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Attendance</li>
+    <li class="breadcrumb-item active">Kelola Kehadiran</li>
 @endsection
 
 @section('content')
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">All Attendance Records</h3>
+        <h2 class="card-title">Kelola Kehadiran</h2>
         <div class="card-tools">
             <a href="{{ route('admin.export') }}" class="btn btn-success btn-sm">
                 <i class="fas fa-file-excel"></i> Export Excel
@@ -63,13 +64,14 @@
                 </span>
             @endif
         </div>
-        <table class="table table-striped">
+        <table class="table table-striped table-hover table-bordered">
             <thead>
                 <tr>
                     <th>User</th>
                     <th>Tanggal</th>
                     <th>Mode</th>
                     <th>Status</th>
+                    <th>Approval</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -90,6 +92,11 @@
                             @if ($a->status === 'late')
                                 <i class="fas fa-exclamation-triangle text-danger"></i>
                             @endif
+                        </td>
+                        <td>
+                            <span class="badge badge-{{ $a->approval_status == 'pending' ? 'warning' : ($a->approval_status == 'approved' ? 'success' : 'danger') }}">
+                                {{ ucfirst($a->approval_status) }}
+                            </span>
                         </td>
                         <td>
                             <a href="{{ route('admin.attendance.show', $a->id) }}" class="btn btn-sm btn-primary">

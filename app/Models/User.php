@@ -54,6 +54,14 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
 
+    /**
+     * Relation to karyawan record based on email match.
+     */
+    public function karyawan()
+    {
+        return $this->hasOne(\App\Models\Karyawan::class, 'email', 'email');
+    }
+
     
     public function createdQrCodes()
     {

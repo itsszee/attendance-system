@@ -178,7 +178,7 @@
         <h3 class="card-title">Recent Attendance (10 Terakhir)</h3>
     </div>
     <div class="card-body p-0">
-        <table class="table table-striped">
+        <table class="table table-striped table-hover table-bordered">
             <thead>
                 <tr>
                     <th>User</th>

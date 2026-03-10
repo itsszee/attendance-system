@@ -2,6 +2,14 @@
 
 @section('title', 'Kelola Karyawan')
 
+@section('page-title', 'Kelola Karyawan')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Kelola Karyawan</li>
+@endsection
+
+
 @section('content')
 <div class="container-fluid">
     <div class="row mb-3">
@@ -14,13 +22,6 @@
             </a>
         </div>
     </div>
-
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-        </div>
-    @endif
 
     <div class="card">
         <div class="card-header">
@@ -68,7 +69,7 @@
                 @endif
             </div>
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover table-bordered">
                     <thead class="thead-dark">
                         <tr>
                             <th width="4%">#</th>
@@ -76,6 +77,7 @@
                             <th>NIP</th>
                             <th>Jabatan</th>
                             <th>Departemen</th>
+                            <th>Shift</th>
                             <th>Email</th>
                             <th width="20%">Aksi</th>
                         </tr>
@@ -88,6 +90,7 @@
                                 <td>{{ $k->nip }}</td>
                                 <td>{{ $k->jabatan }}</td>
                                 <td>{{ $k->departemen }}</td>
+                                <td>{{ optional($k->shift)->name ?? '-' }}</td>
                                 <td>{{ $k->email }}</td>
                                 <td>
                                     <a href="{{ route('karyawan.edit', $k) }}" class="btn btn-sm btn-warning">

@@ -5,30 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Karyawan extends Model
+class Shift extends Model
 {
     use HasFactory;
 
-    protected $table = 'karyawans';
-
     protected $fillable = [
-        'nama',
-        'nip',
-        'jabatan',
-        'departemen',
-        'email',
-        'no_telepon',
-        'alamat',
-        'shift_id',
+        'name',
+        'start_time',
+        'end_time',
+        'description',
     ];
 
     protected $casts = [
+        'start_time' => 'datetime:H:i',
+        'end_time' => 'datetime:H:i',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
-    public function shift()
+    public function karyawans()
     {
-        return $this->belongsTo(Shift::class);
+        return $this->hasMany(Karyawan::class);
     }
 }

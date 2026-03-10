@@ -61,8 +61,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $karyawan->email) }}" required>
+                    <label for="email">Email (pilih dari user yang sudah ada)</label>
+                    <select class="form-control @error('email') is-invalid @enderror" id="email" name="email" required>
+                        <option value="">-- pilih email --</option>
+                        @foreach($users as $email)
+                            <option value="{{ $email }}" {{ old('email', $karyawan->email) == $email ? 'selected' : '' }}>{{ $email }}</option>
+                        @endforeach
+                    </select>
                     @error('email')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
@@ -80,6 +85,21 @@
                     <label for="alamat">Alamat <small>(Opsional)</small></label>
                     <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3">{{ old('alamat', $karyawan->alamat) }}</textarea>
                     @error('alamat')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="shift_id">Shift <small>(Opsional)</small></label>
+                    <select class="form-control @error('shift_id') is-invalid @enderror" id="shift_id" name="shift_id">
+                        <option value="">Pilih Shift</option>
+                        @foreach($shifts as $shift)
+                            <option value="{{ $shift->id }}" {{ old('shift_id', $karyawan->shift_id) == $shift->id ? 'selected' : '' }}>
+                                {{ $shift->name }} ({{ $shift->start_time->format('H:i') }} - {{ $shift->end_time->format('H:i') }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('shift_id')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>

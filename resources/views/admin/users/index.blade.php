@@ -2,6 +2,12 @@
 
 @section('title', 'Kelola User')
 
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item active">Kelola User</li>
+@endsection
+
 @section('content')
 <div class="container-fluid">
     <div class="row mb-3">
@@ -14,13 +20,6 @@
             </a>
         </div>
     </div>
-
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-        </div>
-    @endif
 
     <div class="card">
         <div class="card-header">
@@ -54,7 +53,7 @@
                     </span>
                 @endif
             </div>
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th width="5%">#</th>

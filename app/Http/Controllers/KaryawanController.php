@@ -32,7 +32,14 @@ class KaryawanController extends Controller
 
     public function create()
     {
-        return view('admin.karyawan.create');
+        $shifts = \App\Models\Shift::all();
+        // provide list of user emails not yet assigned to karyawan
+        $assigned = Karyawan::pluck('email')->toArray();
+        $users = \App\Models\User::whereNotIn('email', $assigned)
+            ->orderBy('email')
+            ->pluck('email');
+
+        return view('admin.karyawan.create', compact('shifts', 'users'));
     }
 
     public function store(Request $request)
@@ -42,9 +49,10 @@ class KaryawanController extends Controller
             'nip' => 'required|unique:karyawans',
             'jabatan' => 'required|string|max:255',
             'departemen' => 'required|string|max:255',
-            'email' => 'required|email|unique:karyawans',
+            'email' => 'required|email|exists:users,email|unique:karyawans',
             'no_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:500',
+            'shift_id' => 'nullable|exists:shifts,id',
         ]);
 
         Karyawan::create($validated);
@@ -54,7 +62,16 @@ class KaryawanController extends Controller
 
     public function edit(Karyawan $karyawan)
     {
-        return view('admin.karyawan.edit', compact('karyawan'));
+        $shifts = \App\Models\Shift::all();
+        $assigned = Karyawan::where('id', '!=', $karyawan->id)
+            ->pluck('email')
+            ->toArray();
+        $users = \App\Models\User::whereNotIn('email', $assigned)
+            ->orWhere('email', $karyawan->email)
+            ->orderBy('email')
+            ->pluck('email');
+
+        return view('admin.karyawan.edit', compact('karyawan', 'shifts', 'users'));
     }
 
     public function update(Request $request, Karyawan $karyawan)
@@ -64,9 +81,10 @@ class KaryawanController extends Controller
             'nip' => 'required|unique:karyawans,nip,' . $karyawan->id,
             'jabatan' => 'required|string|max:255',
             'departemen' => 'required|string|max:255',
-            'email' => 'required|email|unique:karyawans,email,' . $karyawan->id,
+            'email' => 'required|email|exists:users,email|unique:karyawans,email,' . $karyawan->id,
             'no_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:500',
+            'shift_id' => 'nullable|exists:shifts,id',
         ]);
 
         $karyawan->update($validated);

@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Attendance routes
@@ -69,6 +70,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/attendance', [AdminController::class, 'attendance'])->name('admin.attendance.index');
     Route::get('/attendance/{id}', [AdminController::class, 'show'])->name('admin.attendance.show');
+     Route::post('/attendance/{id}/approve', [AdminController::class, 'approve'])->name('admin.attendance.approve');
+    Route::post('/attendance/{id}/reject', [AdminController::class, 'reject'])->name('admin.attendance.reject');
     Route::get('/qr', [AdminQrController::class, 'index'])->name('admin.qr.index');
     Route::post('/qr/generate', [AdminQrController::class, 'generate'])->name('admin.qr.generate');
     Route::post('/qr/start-auto', [AdminQrController::class, 'startAutoGenerate'])->name('admin.qr.start');
@@ -85,6 +88,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('karyawan', KaryawanController::class);
     Route::resource('location_settings', LocationSettingController::class)->except(['show']);
+    Route::resource('shifts', App\Http\Controllers\ShiftController::class);
 });
 
 // Google OAuth routes

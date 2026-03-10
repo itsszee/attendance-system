@@ -9,7 +9,24 @@
             <div class="card">
                 <div class="card-header">Informasi Profil</div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('profile.update') }}">
+                    @if(isset($karyawan) && $karyawan)
+                <div class="mb-4">
+                    <h5>Data Karyawan</h5>
+                    <table class="table table-sm">
+                        <tr><th>Nama</th><td>{{ $karyawan->nama }}</td></tr>
+                        <tr><th>NIP</th><td>{{ $karyawan->nip }}</td></tr>
+                        <tr><th>Jabatan</th><td>{{ $karyawan->jabatan }}</td></tr>
+                        <tr><th>Departemen</th><td>{{ $karyawan->departemen }}</td></tr>
+                        <tr><th>No. Telepon</th><td>{{ $karyawan->no_telepon ?? '-' }}</td></tr>
+                        <tr><th>Alamat</th><td>{{ $karyawan->alamat ?? '-' }}</td></tr>
+                        @if($karyawan->shift)
+                        <tr><th>Shift</th><td>{{ $karyawan->shift->name }}</td></tr>
+                        @endif
+                    </table>
+                </div>
+                @endif
+
+                <form method="POST" action="{{ route('profile.update') }}">
                         @csrf
                         @method('patch')
 

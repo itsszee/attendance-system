@@ -42,18 +42,69 @@ class AdminController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Filter by approval status
+        if ($request->filled('approval_status')) {
+            $query->where('approval_status', $request->approval_status);
+        }
+
         $attendances = $query->orderBy('date', 'desc')
-            ->paginate(10)
+            ->orderBy('check_in_at', 'desc')
+            ->paginate(50)
             ->appends($request->query());
 
+        // FIX: Ganti 'admin.attendance.index' jadi 'admin.attendance'
         return view('admin.attendance.index', compact('attendances'));
     }
 
-    // AdminAttendanceController.php
     public function show($id)
     {
         $attendance = Attendance::with('user')->findOrFail($id);
 
-        return view('admin.attendance.show', compact('attendance'));
+        // FIX: Ganti 'admin.attendance.show' jadi 'admin.attendance-detail'
+        return view('admin.attendance-detail', compact('attendance'));
+    }
+
+    /**
+     * Approve a WFH attendance record.
+     */
+    public function approve($id)
+    {
+        $attendance = Attendance::findOrFail($id);
+        
+        if ($attendance->mode !== 'WFH') {
+            return back()->with('error', 'Hanya WFH yang perlu approval!');
+        }
+
+        if ($attendance->approval_status !== 'pending') {
+            return back()->with('error', 'Attendance sudah di-process sebelumnya!');
+        }
+
+        $attendance->update([
+            'approval_status' => 'approved'
+        ]);
+
+        return back()->with('success', 'WFH berhasil di-approve! ✅');
+    }
+
+    /**
+     * Reject a WFH attendance record.
+     */
+    public function reject($id)
+    {
+        $attendance = Attendance::findOrFail($id);
+        
+        if ($attendance->mode !== 'WFH') {
+            return back()->with('error', 'Hanya WFH yang perlu approval!');
+        }
+
+        if ($attendance->approval_status !== 'pending') {
+            return back()->with('error', 'Attendance sudah di-process sebelumnya!');
+        }
+
+        $attendance->update([
+            'approval_status' => 'rejected'
+        ]);
+
+        return back()->with();
     }
 }
