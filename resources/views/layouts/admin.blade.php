@@ -84,13 +84,6 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ route('admin.export') }}" class="nav-link">
-                            <i class="nav-icon fas fa-file-excel"></i>
-                            <p>Export Excel</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
                         <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Kelola User</p>

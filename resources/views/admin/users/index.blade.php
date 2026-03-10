@@ -23,7 +23,37 @@
     @endif
 
     <div class="card">
+        <div class="card-header">
+            <form method="GET" action="{{ route('users.index') }}" class="form-inline">
+                <div class="form-group mr-3">
+                    <label for="role" class="mr-2">Role:</label>
+                    <select name="role" id="role" class="form-control form-control-sm">
+                        <option value="">All Roles</option>
+                        <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="karyawan" {{ request('role') == 'karyawan' ? 'selected' : '' }}>Karyawan</option>
+                        <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm mr-2">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+
+                <a href="{{ route('users.index') }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            </form>
+        </div>
+
         <div class="card-body">
+            <div class="mb-3">
+                <strong>Total Users: {{ $users->total() }}</strong>
+                @if(request('role'))
+                    <span class="text-muted ml-3">
+                        Filtered by Role: {{ request('role') }}
+                    </span>
+                @endif
+            </div>
             <table class="table table-striped table-hover">
                 <thead class="thead-dark">
                     <tr>

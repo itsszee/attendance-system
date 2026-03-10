@@ -11,15 +11,37 @@ use Endroid\QrCode\Writer\PngWriter;
 
 class AdminQrController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Ambil QR code yang auto-generate (active)
         $activeQr = OfficeQrCode::where('auto_generate', true)
             ->where('is_active', true)
             ->first();
 
-        // Ambil history QR codes
-        $codes = OfficeQrCode::orderBy('created_at', 'desc')->limit(50)->get();
+        // Ambil history QR codes dengan filter
+        $query = OfficeQrCode::query();
+
+        // Filter by status
+        if ($request->filled('status')) {
+            if ($request->status === 'active') {
+                $query->where('is_active', true)->where('valid_until', '>=', now());
+            } elseif ($request->status === 'expired') {
+                $query->where(function($q) {
+                    $q->where('is_active', false)->orWhere('valid_until', '<', now());
+                });
+            }
+        }
+
+        // Filter by auto_generate
+        if ($request->filled('auto')) {
+            if ($request->auto === 'yes') {
+                $query->where('auto_generate', true);
+            } elseif ($request->auto === 'no') {
+                $query->where('auto_generate', false);
+            }
+        }
+
+        $codes = $query->orderBy('created_at', 'desc')->limit(50)->get();
 
         return view('admin.qr', compact('codes', 'activeQr'));
     }

@@ -19,7 +19,50 @@
             </a>
         </div>
     </div>
+
+    <!-- Filter Form -->
+    <div class="card-header">
+        <form method="GET" action="{{ route('admin.attendance.index') }}" class="form-inline">
+            <div class="form-group mr-3">
+                <label for="mode" class="mr-2">Mode:</label>
+                <select name="mode" id="mode" class="form-control form-control-sm">
+                    <option value="">All Modes</option>
+                    <option value="WFH" {{ request('mode') == 'WFH' ? 'selected' : '' }}>WFH</option>
+                    <option value="WFO" {{ request('mode') == 'WFO' ? 'selected' : '' }}>WFO</option>
+                </select>
+            </div>
+
+            <div class="form-group mr-3">
+                <label for="status" class="mr-2">Status:</label>
+                <select name="status" id="status" class="form-control form-control-sm">
+                    <option value="">All Status</option>
+                    <option value="on_time" {{ request('status') == 'on_time' ? 'selected' : '' }}>On Time</option>
+                    <option value="late" {{ request('status') == 'late' ? 'selected' : '' }}>Late</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm mr-2">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+
+            <a href="{{ route('admin.attendance.index') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-times"></i> Clear
+            </a>
+        </form>
+    </div>
+
     <div class="card-body p-0">
+        <div class="p-3">
+            <strong>Total Records: {{ $attendances->total() }}</strong>
+            @if(request('mode') || request('status'))
+                <span class="text-muted ml-3">
+                    Filtered by:
+                    @if(request('mode')) Mode: {{ request('mode') }} @endif
+                    @if(request('mode') && request('status')) | @endif
+                    @if(request('status')) Status: {{ request('status') == 'on_time' ? 'On Time' : 'Late' }} @endif
+                </span>
+            @endif
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>

@@ -23,7 +23,50 @@
     @endif
 
     <div class="card">
+        <div class="card-header">
+            <form method="GET" action="{{ route('karyawan.index') }}" class="form-inline">
+                <div class="form-group mr-3">
+                    <label for="jabatan" class="mr-2">Jabatan:</label>
+                    <select name="jabatan" id="jabatan" class="form-control form-control-sm">
+                        <option value="">All Jabatan</option>
+                        @foreach($jabatanList as $jabatan)
+                            <option value="{{ $jabatan }}" {{ request('jabatan') == $jabatan ? 'selected' : '' }}>{{ $jabatan }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group mr-3">
+                    <label for="departemen" class="mr-2">Departemen:</label>
+                    <select name="departemen" id="departemen" class="form-control form-control-sm">
+                        <option value="">All Departemen</option>
+                        @foreach($departemenList as $departemen)
+                            <option value="{{ $departemen }}" {{ request('departemen') == $departemen ? 'selected' : '' }}>{{ $departemen }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm mr-2">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+
+                <a href="{{ route('karyawan.index') }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            </form>
+        </div>
+
         <div class="card-body">
+            <div class="mb-3">
+                <strong>Total Karyawan: {{ $karyawan->total() }}</strong>
+                @if(request('jabatan') || request('departemen'))
+                    <span class="text-muted ml-3">
+                        Filtered by:
+                        @if(request('jabatan')) Jabatan: {{ request('jabatan') }} @endif
+                        @if(request('jabatan') && request('departemen')) | @endif
+                        @if(request('departemen')) Departemen: {{ request('departemen') }} @endif
+                    </span>
+                @endif
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead class="thead-dark">

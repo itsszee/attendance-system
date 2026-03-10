@@ -28,11 +28,23 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('stats', 'recentAttendance'));
     }
 
-    public function attendance()
+    public function attendance(Request $request)
     {
-        $attendances = Attendance::with('user')
-            ->orderBy('date', 'desc')
-            ->paginate(10);
+        $query = Attendance::with('user');
+
+        // Filter by mode
+        if ($request->filled('mode')) {
+            $query->where('mode', $request->mode);
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $attendances = $query->orderBy('date', 'desc')
+            ->paginate(10)
+            ->appends($request->query());
 
         return view('admin.attendance.index', compact('attendances'));
     }

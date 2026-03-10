@@ -116,7 +116,50 @@
             <i class="fas fa-history"></i> Recent QR Codes (Last 50)
         </h3>
     </div>
+
+    <!-- Filter Form -->
+    <div class="card-header border-0">
+        <form method="GET" action="{{ route('admin.qr.index') }}" class="form-inline">
+            <div class="form-group mr-3">
+                <label for="status" class="mr-2">Status:</label>
+                <select name="status" id="status" class="form-control form-control-sm">
+                    <option value="">All Status</option>
+                    <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired</option>
+                </select>
+            </div>
+
+            <div class="form-group mr-3">
+                <label for="auto" class="mr-2">Auto Generate:</label>
+                <select name="auto" id="auto" class="form-control form-control-sm">
+                    <option value="">All Types</option>
+                    <option value="yes" {{ request('auto') == 'yes' ? 'selected' : '' }}>Auto</option>
+                    <option value="no" {{ request('auto') == 'no' ? 'selected' : '' }}>Manual</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm mr-2">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+
+            <a href="{{ route('admin.qr.index') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-times"></i> Clear
+            </a>
+        </form>
+    </div>
+
     <div class="card-body p-0">
+        <div class="p-3">
+            <strong>Total QR Codes: {{ $codes->count() }}</strong>
+            @if(request('status') || request('auto'))
+                <span class="text-muted ml-3">
+                    Filtered by:
+                    @if(request('status')) Status: {{ request('status') }} @endif
+                    @if(request('status') && request('auto')) | @endif
+                    @if(request('auto')) Type: {{ request('auto') == 'yes' ? 'Auto' : 'Manual' }} @endif
+                </span>
+            @endif
+        </div>
         <div class="table-responsive">
             <table class="table table-striped table-valign-middle">
                 <thead>
@@ -223,8 +266,8 @@ function startCountdown(seconds) {
 
         const minutes = Math.floor(remaining / 60);
         const secs = remaining % 60;
-        document.getElementById('countdown').textContent = 
-            `${minutes}:${secs.toString().padStart(2, '0')}`;
+        const timeString = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        document.getElementById('countdown').textContent = timeString;
         
         // Change color when time is running out
         if (remaining <= 30) {

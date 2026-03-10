@@ -66,7 +66,6 @@
 <div class="nav-links">
     <a href="{{ route('admin.attendance.index') }}">📋 Semua Attendance</a>
     <a href="{{ route('admin.qr.index') }}">🔲 Kelola QR Code</a>
-    <a href="{{ route('admin.export') }}">📥 Export Excel</a>
 </div>
 
 <!-- Recent Attendance -->

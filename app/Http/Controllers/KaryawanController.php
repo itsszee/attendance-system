@@ -7,10 +7,27 @@ use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $karyawan = Karyawan::paginate(10);
-        return view('admin.karyawan.index', compact('karyawan'));
+        $query = Karyawan::query();
+
+        // Filter by jabatan
+        if ($request->filled('jabatan')) {
+            $query->where('jabatan', $request->jabatan);
+        }
+
+        // Filter by departemen
+        if ($request->filled('departemen')) {
+            $query->where('departemen', $request->departemen);
+        }
+
+        $karyawan = $query->paginate(10)->appends($request->query());
+
+        // Get unique jabatan and departemen for filter dropdowns
+        $jabatanList = Karyawan::distinct()->pluck('jabatan')->sort();
+        $departemenList = Karyawan::distinct()->pluck('departemen')->sort();
+
+        return view('admin.karyawan.index', compact('karyawan', 'jabatanList', 'departemenList'));
     }
 
     public function create()
