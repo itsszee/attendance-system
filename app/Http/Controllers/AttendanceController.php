@@ -36,10 +36,34 @@ class AttendanceController extends Controller
             'task' => 'required|string',
             'latitude' => 'required',
             'longitude' => 'required',
-            'selfie' => 'required|image|max:2048',
+            'selfie' => 'required',
         ]);
 
-        $photoPath = $request->file('selfie')->store('selfies', 'public');
+        if ($request->hasFile('selfie')) {
+            $photoPath = $request->file('selfie')->store('selfies', 'public');
+        } else {
+            // Assume it's base64 from the camera
+            $imageData = $request->selfie;
+            if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
+                $imageData = substr($imageData, strpos($imageData, ',') + 1);
+                $type = strtolower($type[1]); // jpg, png, etc
+
+                if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                    throw new \Exception('invalid image type');
+                }
+                $imageData = base64_decode($imageData);
+
+                if ($imageData === false) {
+                    throw new \Exception('base64_decode failed');
+                }
+            } else {
+                throw new \Exception('did not match data URI with image data');
+            }
+
+            $fileName = 'selfies/' . uniqid() . '.' . $type;
+            \Illuminate\Support\Facades\Storage::disk('public')->put($fileName, $imageData);
+            $photoPath = $fileName;
+        }
 
         // Determine status based on assigned shift (fall back to 09:00 if none)
         $user = Auth::user();

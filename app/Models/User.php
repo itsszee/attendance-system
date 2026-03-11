@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AuditLog::class, 'action_by');
     }
+
+    public function employeeRequests()
+    {
+        return $this->hasMany(EmployeeRequest::class);
+    }
 }

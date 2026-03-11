@@ -34,7 +34,7 @@ class AssessmentCategoryController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable',
         ]);
 
         AssessmentCategory::create([

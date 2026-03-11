@@ -78,8 +78,8 @@
         
         <!-- Back to Dashboard -->
         <div class="mb-4">
-            <a href="{{ route('dashboard') }}" class="btn btn-light">
-                <i class="fas fa-arrow-left"></i> Back to Dashboard
+             <a href="{{ route('dashboard') }}" class="btn btn-light btn-sm rounded-pill px-3">
+                <i class="fas fa-chevron-left mr-1"></i> Dashboard
             </a>
         </div>
 

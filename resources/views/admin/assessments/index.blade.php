@@ -10,35 +10,48 @@
 @push('styles')
 <style>
     .progress-wrapper {
-        background: #f4f6f9;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+        background: white;
+        padding: 25px;
+        border-radius: var(--radius-lg);
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(0,0,0,0.05);
     }
     .employee-card {
-        transition: transform 0.2s, box-shadow 0.2s;
+        border: 0;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        overflow: hidden;
     }
     .employee-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,.1);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     }
     .status-badge {
         position: absolute;
         top: 15px;
         right: 15px;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        z-index: 10;
     }
     .status-done {
-        background: #d4edda;
-        color: #155724;
+        background: #dcfce7;
+        color: #166534;
     }
     .status-pending {
-        background: #fff3cd;
-        color: #856404;
+        background: #fef3c7;
+        color: #92400e;
+    }
+    .btn-premium {
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-weight: 700;
+        transition: var(--transition);
     }
 </style>
 @endpush
@@ -46,22 +59,22 @@
 @section('content')
 <div class="row">
     <div class="col-12">
-        <h2 class="mb-4">Penilaian Kinerja Periode: <span class="text-primary">{{ $currentPeriod }}</span></h2>
+        <h2 class="font-weight-bold mb-4" style="color: var(--dark);">Penilaian Kinerja <span class="text-primary">{{ $currentPeriod }}</span></h2>
         
         <div class="progress-wrapper">
-            <h5 class="mb-3">
-                Progres Penilaian: <strong>{{ $assessedCount }} dari {{ $totalEmployees }} staf</strong> telah dinilai bulan ini
+            <h5 class="mb-3 font-weight-bold" style="color: var(--secondary); font-size: 15px;">
+                <i class="fas fa-tasks mr-2"></i> PROGRES PENILAIAN: <strong>{{ $assessedCount }} dari {{ $totalEmployees }}</strong> staf selesai dinilai
             </h5>
-            <div class="progress" style="height: 25px; border-radius: 15px;">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+            <div class="progress shadow-sm" style="height: 12px; border-radius: 10px; background: #f1f5f9;">
+                <div class="progress-bar bg-primary" 
                      role="progressbar" 
-                     style="width: {{ $progressPercentage }}%; font-weight: bold; font-size: 1rem;" 
+                     style="width: {{ $progressPercentage }}%; border-radius: 10px;" 
                      aria-valuenow="{{ $progressPercentage }}" 
                      aria-valuemin="0" 
                      aria-valuemax="100">
-                    {{ $progressPercentage }}%
                 </div>
             </div>
+            <div class="mt-2 text-right small font-weight-bold text-primary">{{ $progressPercentage }}% Completed</div>
         </div>
     </div>
 </div>
@@ -80,17 +93,16 @@
                 @endif
                 
                 <div class="card-body text-center pt-5">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($employee->name) }}&background=random" 
-                         class="img-circle mb-3 shadow" alt="User Image" width="80" height="80">
-                    <h5 class="card-title w-100 font-weight-bold mb-1">{{ $employee->name }}</h5>
-                    <p class="text-muted small mb-3">
-                        <i class="fas fa-envelope mr-1"></i> {{ $employee->email }}<br>
-                        <i class="fas fa-id-badge mr-1"></i> {{ ucfirst($employee->role) }}
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($employee->name) }}&background=6366f1&color=fff" 
+                         class="rounded-circle mb-3 shadow-sm" alt="User Image" width="70" height="70">
+                    <h5 class="card-title w-100 font-weight-bold mb-1" style="color: var(--dark);">{{ $employee->name }}</h5>
+                    <p class="text-muted small mb-4">
+                        <i class="fas fa-id-badge mr-1"></i> {{ strtoupper($employee->role) }}
                     </p>
                     
-                    <a href="{{ route('admin.assessments.create', $employee->id) }}" class="btn btn-block {{ $isAssessed ? 'btn-outline-primary' : 'btn-primary' }}">
+                    <a href="{{ route('admin.assessments.create', $employee->id) }}" class="btn btn-block btn-premium {{ $isAssessed ? 'btn-outline-primary' : 'btn-primary' }}">
                         @if($isAssessed)
-                            <i class="fas fa-edit mr-1"></i> Edit Penilaian
+                            <i class="fas fa-edit mr-1"></i> Update
                         @else
                             <i class="fas fa-star mr-1"></i> Beri Nilai
                         @endif

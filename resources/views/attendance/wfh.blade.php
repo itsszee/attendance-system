@@ -1,473 +1,384 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WFH Check-in</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@extends('layouts.user')
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+@section('title', 'WFH Check-in')
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary: #6366f1;
+        --secondary: #64748b;
+        --radius: 20px;
+        --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
 
-        .header {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
+    body {
+        font-family: 'Outfit', sans-serif;
+        background-color: #f8fafc;
+    }
 
-        .header h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .hero-section {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        padding: 40px 0 80px;
+        color: white;
+    }
 
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
+    .page-content {
+        margin-top: -50px;
+        padding-bottom: 50px;
+    }
 
-        .back-btn {
-            background: white;
-            border: 2px solid #e0e0e0;
-            color: #667eea;
-            padding: 10px 20px;
-            border-radius: 10px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.4);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 30px;
+    }
 
-        .back-btn:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
+    .info-item {
+        padding: 15px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #e2e8f0;
+    }
 
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
+    .info-item strong {
+        color: var(--primary);
+        display: block;
+        font-size: 13px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
 
-        .status-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            margin: 5px 0;
-        }
+    .status-badge {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 5px 12px;
+        border-radius: 30px;
+    }
 
-        .status-badge.success {
-            background: #d4edda;
-            color: #155724;
-        }
+    .location-status {
+        padding: 12px 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid transparent;
+    }
 
-        .status-badge.warning {
-            background: #fff3cd;
-            color: #856404;
-        }
+    .location-status.loading { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .location-status.ready { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+    .location-status.error { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
 
-        .info-item {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
+    .btn-premium {
+        background: var(--primary);
+        color: white;
+        border: 0;
+        border-radius: 12px;
+        padding: 14px 20px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        box-shadow: var(--shadow);
+    }
 
-        .info-item strong {
-            color: #667eea;
-            display: block;
-            margin-bottom: 5px;
-        }
+    .btn-premium:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        color: white;
+    }
 
-        .selfie-preview {
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            max-width: 100%;
-            margin-top: 10px;
-        }
+    .btn-premium:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
 
-        .alert {
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
+    .btn-retake { background: #f59e0b; color: white; }
+    .btn-retake:hover { background: #d97706; color: white; }
 
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
+    textarea.form-control {
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        padding: 15px;
+        background: #f8fafc;
+        resize: none;
+    }
 
-        .alert-danger {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+    textarea.form-control:focus {
+        background: white;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
 
-        .location-status {
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    #camera-container {
+        border-radius: 15px;
+        overflow: hidden;
+        border: 4px solid white;
+        box-shadow: var(--shadow);
+        background: #000;
+    }
 
-        .location-status.loading {
-            background: #fff3cd;
-            color: #856404;
-        }
+    .selfie-preview-img {
+        border-radius: 15px;
+        width: 100%;
+        border: 4px solid white;
+        box-shadow: var(--shadow);
+    }
+</style>
+@endpush
 
-        .location-status.ready {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .location-status.error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            background: #fafafa;
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .file-input-label {
-            padding: 14px;
-            background: #fafafa;
-            border: 2px dashed #e0e0e0;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .file-input-label:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .file-input-label i {
-            font-size: 24px;
-            color: #667eea;
-        }
-
-        input[type="file"] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-name {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
-        }
-
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0;
-            }
-
-            .header, .card {
-                padding: 20px;
-            }
-
-            .header h2 {
-                font-size: 24px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    
-    <!-- Back Button -->
-    <a href="{{ route('dashboard') }}" class="back-btn">
-        <i class="fas fa-arrow-left"></i>
-        Back to Dashboard
-    </a>
-
-    <!-- Header -->
-    <div class="header">
-        <h2>
-            <i class="fas fa-home"></i>
-            WFH Check-in
-        </h2>
-        <p>Work From Home - {{ now()->format('l, d F Y') }}</p>
+@section('content')
+<div class="hero-section">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h3 font-weight-bold mb-1">WFH Check-in</h1>
+                <p class="mb-0 opacity-75">{{ now()->format('l, d F Y') }}</p>
+            </div>
+            <a href="{{ route('dashboard') }}" class="btn btn-light btn-sm rounded-pill px-3">
+                <i class="fas fa-chevron-left mr-1"></i> Dashboard
+            </a>
+        </div>
     </div>
-
-    <!-- Already Checked In -->
-    @if(isset($attendance) && $attendance)
-        <div class="card">
-            <h3 style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 20px;">
-                <i class="fas fa-check-circle" style="color: #28a745;"></i>
-                Sudah Check-in
-            </h3>
-
-            <div class="info-item">
-                <strong><i class="fas fa-clock"></i> Waktu Check-in</strong>
-                {{ $attendance->check_in_at->format('H:i:s') }}
-            </div>
-
-            <div class="info-item">
-                <strong><i class="fas fa-traffic-light"></i> Status</strong>
-                <span class="status-badge {{ $attendance->status == 'on_time' ? 'success' : 'warning' }}">
-                    {{ $attendance->status == 'on_time' ? 'Tepat Waktu' : 'Terlambat' }}
-                </span>
-            </div>
-
-            <div class="info-item">
-                <strong><i class="fas fa-clipboard-check"></i> Approval Status</strong>
-                <span class="status-badge {{ $attendance->approval_status == 'approved' ? 'success' : 'warning' }}">
-                    {{ ucfirst($attendance->approval_status) }}
-                </span>
-            </div>
-
-            @if($attendance->task)
-            <div class="info-item">
-                <strong><i class="fas fa-tasks"></i> Task Hari Ini</strong>
-                {{ $attendance->task }}
-            </div>
-            @endif
-
-            @if($attendance->selfie_path)
-            <div class="info-item">
-                <strong><i class="fas fa-camera"></i> Selfie</strong>
-                <img src="{{ asset('storage/' . $attendance->selfie_path) }}" 
-                     alt="Selfie" 
-                     class="selfie-preview">
-            </div>
-            @endif
-        </div>
-    @else
-        <!-- Check-in Form -->
-        <div class="card">
-            
-            @if (session('error'))
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-circle"></i>
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            @if (session('success'))
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle"></i>
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <div id="location-status" class="location-status loading">
-                <i class="fas fa-spinner fa-spin"></i>
-                Mendapatkan lokasi...
-            </div>
-
-            <form method="POST" action="{{ route('attendance.wfh.store') }}" enctype="multipart/form-data" id="wfh-form">
-                @csrf
-
-                <div class="form-group">
-                    <label for="task">
-                        <i class="fas fa-tasks"></i> Task Hari Ini
-                    </label>
-                    <textarea name="task" 
-                              id="task" 
-                              placeholder="Deskripsikan task yang akan dikerjakan hari ini..."
-                              required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <i class="fas fa-camera"></i> Selfie Check-in
-                    </label>
-                    <div class="file-input-wrapper">
-                        <label for="selfie" class="file-input-label">
-                            <i class="fas fa-camera"></i>
-                            <span class="file-name" id="file-name">Pilih foto atau ambil selfie</span>
-                        </label>
-                        <input type="file" 
-                               name="selfie" 
-                               id="selfie" 
-                               accept="image/*" 
-                               capture="user"
-                               required>
-                    </div>
-                </div>
-
-                <input type="hidden" name="latitude" id="lat">
-                <input type="hidden" name="longitude" id="lng">
-
-                <button type="submit" class="submit-btn" id="submit-btn" disabled>
-                    <i class="fas fa-sign-in-alt"></i>
-                    Check-in Sekarang
-                </button>
-            </form>
-        </div>
-    @endif
-
 </div>
 
-@if(!isset($attendance) || !$attendance)
+<div class="container page-content">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <!-- Already Checked In -->
+            @if(isset($attendanceToday) && $attendanceToday && $attendanceToday->mode == 'WFH')
+                <div class="glass-card text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle fa-4x text-success"></i>
+                    </div>
+                    <h3 class="font-weight-bold mb-4">Sudah Check-in</h3>
+
+                    <div class="row text-left">
+                        <div class="col-6">
+                            <div class="info-item">
+                                <strong><i class="fas fa-clock"></i> Waktu</strong>
+                                {{ $attendanceToday->check_in_at->format('H:i') }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="info-item">
+                                <strong><i class="fas fa-traffic-light"></i> Status</strong>
+                                <span class="status-badge text-primary" style="background: rgba(99, 102, 241, 0.1);">
+                                    {{ $attendanceToday->status == 'on_time' ? 'Tepat Waktu' : 'Terlambat' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if($attendanceToday->selfie_path)
+                    <div class="mt-4">
+                        <strong class="d-block mb-3 small text-muted text-uppercase">Foto Check-in</strong>
+                        <img src="{{ asset('storage/' . $attendanceToday->selfie_path) }}" 
+                             alt="Selfie" 
+                             class="selfie-preview-img"
+                             style="max-width: 300px;">
+                    </div>
+                    @endif
+                </div>
+            @else
+                <!-- Check-in Form -->
+                <div class="glass-card">
+                    @if (session('error'))
+                        <div class="alert alert-danger border-0 mb-4" style="border-radius: 12px;">
+                            <i class="fas fa-exclamation-triangle mr-2"></i> {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <div id="location-status" class="location-status loading mb-4">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Mendapatkan lokasi...
+                    </div>
+
+                    <form method="POST" action="{{ route('attendance.wfh.store') }}" id="wfh-form">
+                        @csrf
+                        <div class="form-group mb-4">
+                            <label class="small font-weight-bold text-muted text-uppercase">
+                                <i class="fas fa-tasks mr-1"></i> Task Hari Ini
+                            </label>
+                            <textarea name="task" id="task" class="form-control" rows="3" placeholder="Apa yang akan Anda kerjakan hari ini?" required>{{ old('task') }}</textarea>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="small font-weight-bold text-muted text-uppercase">
+                                <i class="fas fa-camera mr-1"></i> Selfie Check-in
+                            </label>
+                            
+                            <div id="camera-container" style="position: relative; margin-bottom: 20px;">
+                                <video id="video" width="100%" height="auto" autoplay playsinline style="display: block;"></video>
+                                <canvas id="canvas" style="display:none;"></canvas>
+                                
+                                <div id="camera-overlay" style="position: absolute; bottom: 15px; left: 15px; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); font-size: 11px; font-weight: 500; pointer-events: none;">
+                                    <div id="overlay-date"></div>
+                                    <div id="overlay-location">Menunggu GPS...</div>
+                                </div>
+                            </div>
+
+                            <div id="preview-container" style="display: none; margin-bottom: 20px;">
+                                <img id="selfie-preview-img" src="" class="selfie-preview-img">
+                            </div>
+
+                            <button type="button" id="capture-btn" class="btn-premium">
+                                <i class="fas fa-camera"></i> Ambil Foto
+                            </button>
+                            
+                            <button type="button" id="retake-btn" class="btn-premium btn-retake" style="display: none;">
+                                <i class="fas fa-redo"></i> Foto Ulang
+                            </button>
+                            
+                            <input type="hidden" name="selfie" id="selfie-data">
+                        </div>
+
+                        <input type="hidden" name="latitude" id="lat">
+                        <input type="hidden" name="longitude" id="lng">
+
+                        <button type="submit" class="btn-premium py-3" id="submit-btn" disabled>
+                            <i class="fas fa-sign-in-alt"></i>
+                            Check-in Sekarang
+                        </button>
+                    </form>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
+@if(!isset($attendanceToday) || !$attendanceToday)
 <script>
     const form = document.getElementById('wfh-form');
     const submitBtn = document.getElementById('submit-btn');
     const status = document.getElementById('location-status');
-    const fileInput = document.getElementById('selfie');
-    const fileName = document.getElementById('file-name');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const retakeBtn = document.getElementById('retake-btn');
+    const selfieData = document.getElementById('selfie-data');
+    const cameraContainer = document.getElementById('camera-container');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImg = document.getElementById('selfie-preview-img');
+    const overlayDate = document.getElementById('overlay-date');
+    const overlayLocation = document.getElementById('overlay-location');
 
-    // File input preview
-    fileInput.addEventListener('change', function(e) {
-        if (e.target.files.length > 0) {
-            fileName.textContent = e.target.files[0].name;
+    let currentLat = null;
+    let currentLng = null;
+
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: 'user' }, 
+                audio: false 
+            });
+            video.srcObject = stream;
+        } catch (err) {
+            console.error("Camera error:", err);
+            status.className = 'location-status error';
+            status.innerHTML = '<i class="fas fa-times-circle"></i> Gagal mengakses kamera. Mohon izinkan akses kamera.';
         }
+    }
+
+    startCamera();
+
+    function updateOverlayTime() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        overlayDate.innerText = now.toLocaleDateString('id-ID', options);
+    }
+    setInterval(updateOverlayTime, 1000);
+    updateOverlayTime();
+
+    captureBtn.addEventListener('click', () => {
+        canvas.width = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 480;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        const fontSize = Math.floor(canvas.width / 35);
+        ctx.font = `bold ${fontSize}px 'Outfit', sans-serif`;
+        ctx.fillStyle = "white";
+        ctx.textAlign = "left";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const timeStr = now.toLocaleTimeString('id-ID');
+        const locStr = currentLat ? `Lat: ${currentLat.toFixed(6)}, Lng: ${currentLng.toFixed(6)}` : "GPS: Unknown";
+
+        ctx.fillStyle = "rgba(0,0,0,0.4)";
+        ctx.fillRect(0, canvas.height - (fontSize * 4), canvas.width, fontSize * 4);
+        
+        ctx.fillStyle = "white";
+        ctx.fillText(dateStr + " " + timeStr, 20, canvas.height - (fontSize * 2.3));
+        ctx.fillText(locStr, 20, canvas.height - (fontSize * 0.8));
+
+        const data = canvas.toDataURL('image/jpeg', 0.85);
+        selfieData.value = data;
+        previewImg.src = data;
+        
+        cameraContainer.style.display = 'none';
+        previewContainer.style.display = 'block';
+        captureBtn.style.display = 'none';
+        retakeBtn.style.display = 'flex';
+        
+        checkSubmitStatus();
     });
 
-    // Get location
+    retakeBtn.addEventListener('click', () => {
+        cameraContainer.style.display = 'block';
+        previewContainer.style.display = 'none';
+        captureBtn.style.display = 'flex';
+        retakeBtn.style.display = 'none';
+        selfieData.value = '';
+        checkSubmitStatus();
+    });
+
+    function checkSubmitStatus() {
+        submitBtn.disabled = !(currentLat && currentLng && selfieData.value);
+    }
+
     navigator.geolocation.getCurrentPosition(
         function(pos) {
-            document.getElementById('lat').value = pos.coords.latitude;
-            document.getElementById('lng').value = pos.coords.longitude;
-            
-            // Enable button setelah dapet lokasi
-            submitBtn.disabled = false;
-            status.className = 'location-status ready';
-            status.innerHTML = '<i class="fas fa-check-circle"></i> Lokasi terdeteksi: ' + 
-                               pos.coords.latitude.toFixed(4) + ', ' + 
-                               pos.coords.longitude.toFixed(4);
+            currentLat = pos.coords.latitude;
+            currentLng = pos.coords.longitude;
+            const latInput = document.getElementById('lat');
+            const lngInput = document.getElementById('lng');
+            if(latInput) latInput.value = currentLat;
+            if(lngInput) lngInput.value = currentLng;
+            if(overlayLocation) overlayLocation.innerText = `GPS: ${currentLat.toFixed(6)}, ${currentLng.toFixed(6)}`;
+            if(status) {
+                status.className = 'location-status ready';
+                status.innerHTML = '<i class="fas fa-check-circle"></i> Lokasi terdeteksi secara akurat';
+            }
+            checkSubmitStatus();
         },
         function(error) {
-            status.className = 'location-status error';
-            status.innerHTML = '<i class="fas fa-times-circle"></i> Gagal mendapatkan lokasi. Aktifkan GPS!';
-            alert('Lokasi wajib diaktifkan untuk check-in WFH');
+            if(status) {
+                status.className = 'location-status error';
+                status.innerHTML = '<i class="fas fa-exclamation-circle"></i> Aktifkan GPS untuk melanjutkan check-in.';
+            }
         },
         { enableHighAccuracy: true, timeout: 10000 }
     );
 
-    // Validate sebelum submit
-    form.addEventListener('submit', function(e) {
-        if (!document.getElementById('lat').value || !document.getElementById('lng').value) {
-            e.preventDefault();
-            alert('Tunggu lokasi terdeteksi dulu!');
-            return;
-        }
-        
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    });
-
-    // Auto-refresh CSRF token every 5 minutes
-    setInterval(function() {
-        fetch('{{ route('attendance.wfh.form') }}')
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newToken = doc.querySelector('input[name="_token"]');
-                
-                if (newToken) {
-                    document.querySelector('input[name="_token"]').value = newToken.value;
-                }
-            })
-            .catch(err => console.error('Failed to refresh token:', err));
-    }, 5 * 60 * 1000);
+    if(form) {
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        });
+    }
 </script>
 @endif
-
-</body>
-</html>
+@endsection

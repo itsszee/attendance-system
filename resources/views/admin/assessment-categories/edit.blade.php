@@ -47,7 +47,7 @@
 
                         <div class="form-group mb-4">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" {{ $assessmentCategory->is_active ? 'checked' : '' }}>
+                                <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" value="1" {{ $assessmentCategory->is_active ? 'checked' : '' }}>
                                 <label class="custom-control-label" for="is_active">Aktif (Tampil di form penilaian)</label>
                             </div>
                         </div>
