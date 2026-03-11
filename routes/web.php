@@ -62,6 +62,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/attendance/checkout', [AttendanceController::class, 'checkOut'])
         ->name('attendance.checkout');
+
+    // Employee Assessments
+    Route::get('/my-assessments', [App\Http\Controllers\EmployeeAssessmentController::class, 'index'])
+        ->name('employee.assessments.index');
 });
 
 // Admin routes
@@ -89,6 +93,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('karyawan', KaryawanController::class);
     Route::resource('location_settings', LocationSettingController::class)->except(['show']);
     Route::resource('shifts', App\Http\Controllers\ShiftController::class);
+    Route::resource('assessment-categories', App\Http\Controllers\Admin\AssessmentCategoryController::class)->except(['show']);
+    
+    Route::get('assessments', [App\Http\Controllers\Admin\AssessmentController::class, 'index'])->name('admin.assessments.index');
+    Route::get('assessments/create/{evaluatee}', [App\Http\Controllers\Admin\AssessmentController::class, 'create'])->name('admin.assessments.create');
+    Route::post('assessments/{evaluatee}', [App\Http\Controllers\Admin\AssessmentController::class, 'store'])->name('admin.assessments.store');
 });
 
 // Google OAuth routes

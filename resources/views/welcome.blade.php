@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -149,11 +150,13 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
-        <div class="logo">
-            <i class="fas fa-clipboard-check"></i>
+        <div class="logo"
+            style="width: 50px; height: 50px; margin: 0 auto 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+            <i class="fas fa-user-clock" style="font-size: 24px; color: white;"></i>
         </div>
         <h1>Attendance System</h1>
         <p class="subtitle">Sistem absensi modern untuk WFH & WFO</p>
@@ -181,9 +184,9 @@
             <a href="{{ route('login') }}" class="btn btn-primary">
                 <i class="fas fa-sign-in-alt"></i> Login to Dashboard
             </a>
-            
+
             <div class="divider">atau</div>
-            
+
             <a href="{{ route('register') }}" class="btn btn-secondary">
                 <i class="fas fa-user-plus"></i> Create New Account
             </a>
@@ -191,4 +194,5 @@
     </div>
 
 </body>
+
 </html>

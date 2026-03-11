@@ -242,6 +242,9 @@
                     <p>{{ now()->format('l, d F Y') }}</p>
                 </div>
                 <div class="header-actions">
+                    <a href="{{ route('employee.assessments.index') }}" class="btn btn-info btn-header">
+                        <i class="fas fa-star"></i> Penilaian
+                    </a>
                     <a href="{{ route('profile.edit') }}" class="btn btn-profile btn-header">
                         <i class="fas fa-user"></i> Profile
                     </a>

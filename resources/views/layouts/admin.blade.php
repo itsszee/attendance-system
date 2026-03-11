@@ -134,6 +134,22 @@
                             </a>
                         </li>
 
+                        <li class="nav-header">PENILAIAN</li>
+                        <li class="nav-item">
+                            <a href="{{ route('assessment-categories.index') }}"
+                                class="nav-link {{ request()->routeIs('assessment-categories.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-list-check"></i>
+                                <p>Kategori Penilaian</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.assessments.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.assessments.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-star"></i>
+                                <p>Beri Penilaian</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </nav>
             </div>
