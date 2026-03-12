@@ -8,10 +8,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\OfficeQrCode;
 
-// Class and Inheritance
+/**
+ * @class AttendanceController
+ * @brief Controller untuk menangani alur absensi WFH dan WFO.
+ * 
+ * Class ini bertanggung jawab untuk menampilkan form absensi, memvalidasi lokasi,
+ * serta menyimpan data absensi ke database.
+ * 
+ * @author Ujikom Student
+ */
 class AttendanceController extends Controller
 {
-    // Method menampilkan form
+    /**
+     * @brief Menampilkan form absensi WFH.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function wfhForm()
     {
         // Object / Instance
@@ -119,6 +131,13 @@ class AttendanceController extends Controller
         return back()->with('success', 'Check-out berhasil');
     }
 
+    /**
+     * @brief Menampilkan form absensi WFO.
+     * 
+     * Fungsi ini mengambil pengaturan lokasi kantor untuk divalidasi di sisi klien.
+     * 
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function wfoForm()
     {
         $attendance = Attendance::where('user_id', Auth::id())
@@ -212,6 +231,18 @@ class AttendanceController extends Controller
         return redirect()->route('dashboard')->with('success', 'Absen WFO berhasil');
     }
 
+    /**
+     * @brief Menghitung apakah koordinat user berada dalam radius kantor.
+     * 
+     * Menggunakan rumus Haversine untuk menghitung jarak antara dua koordinat lat/lng.
+     * 
+     * @param float $lat1 Latitude user
+     * @param float $lng1 Longitude user
+     * @param float $lat2 Latitude kantor
+     * @param float $lng2 Longitude kantor
+     * @param int $radius Radius maksimal (meter)
+     * @return bool True jika di dalam radius, False jika di luar
+     */
     private function withinRadius($lat1, $lng1, $lat2, $lng2, $radius)
     {
         $earthRadius = 6371000;
