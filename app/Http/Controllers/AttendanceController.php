@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\OfficeQrCode;
 
+// Class and Inheritance
 class AttendanceController extends Controller
 {
+    // Method menampilkan form
     public function wfhForm()
     {
+        // Object / Instance
         $attendance = Attendance::where('user_id', Auth::id())
             ->whereDate('date', now())
             ->first();
@@ -21,6 +24,7 @@ class AttendanceController extends Controller
             'alreadyAbsent' => (bool) $attendance
         ]);
     }
+
     public function storeWfh(Request $request)
     {
 
@@ -39,13 +43,14 @@ class AttendanceController extends Controller
             'selfie' => 'required',
         ]);
 
+        // Condition
         if ($request->hasFile('selfie')) {
             $photoPath = $request->file('selfie')->store('selfies', 'public');
         } else {
             $imageData = $request->selfie;
             if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
                 $imageData = substr($imageData, strpos($imageData, ',') + 1);
-                $type = strtolower($type[1]); // jpg, png, etc
+                $type = strtolower($type[1]); 
 
                 if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
                     throw new \Exception('invalid image type');
@@ -56,7 +61,7 @@ class AttendanceController extends Controller
                     throw new \Exception('base64_decode failed');
                 }
             } else {
-                throw new \Exception('did not match data URI with image data');
+                throw new \Exception('did not match data URI in image data');
             }
 
             $fileName = 'selfies/' . uniqid() . '.' . $type;
@@ -126,6 +131,9 @@ class AttendanceController extends Controller
 
         $location = \App\Models\LocationSetting::first();
 
+        // Debugging: Lihat isi data lokasi kantor
+        // dd($location);
+
         return view('attendance.wfo', [
             'attendance' => $attendance,
             'alreadyAbsent' => (bool) $attendance,
@@ -155,6 +163,7 @@ class AttendanceController extends Controller
             ->where('valid_until', '>=', now())
             ->first();
 
+        // Exception handling untuk QR code yang tidak valid atau kadaluarsa
         if (!$qr) {
             return back()->with('error', 'QR tidak valid / kadaluarsa');
         }

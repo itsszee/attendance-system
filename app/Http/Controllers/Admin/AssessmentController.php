@@ -18,18 +18,19 @@ class AssessmentController extends Controller
      */
     public function index()
     {
-        // Define current period as current month and year
-        $currentPeriod = Carbon::now()->isoFormat('MMMM YYYY');
         
-        $employees = User::whereIn('role', ['karyawan', 'user'])->get();
+        $currentPeriod = Carbon::now()->isoFormat('MMMM YYYY'); //Variable dengan tipe data String
         
-        // Find who has been assessed in this period
-        $assessedIds = Assessment::where('period', $currentPeriod)
+        $employees = User::whereIn('role', ['karyawan', 'user'])->get(); //Mengambil data dari database (Collection/Array)
+        
+        $assessedIds = Assessment::where('period', $currentPeriod) //Array & Variable Integer
             ->pluck('evaluatee_id')
             ->toArray();
             
         $totalEmployees = $employees->count();
         $assessedCount = count($assessedIds);
+
+        // Pengkondisian ternary operator
         $progressPercentage = $totalEmployees > 0 ? round(($assessedCount / $totalEmployees) * 100) : 0;
             
         return view('admin.assessments.index', compact('employees', 'assessedIds', 'currentPeriod', 'totalEmployees', 'assessedCount', 'progressPercentage'));
@@ -43,7 +44,6 @@ class AssessmentController extends Controller
         $categories = AssessmentCategory::where('is_active', true)->get();
         $currentPeriod = Carbon::now()->isoFormat('MMMM YYYY');
         
-        // Find next employee to redirect to if user clicks "Save & Next"
         $allEmployees = User::whereIn('role', ['karyawan', 'user'])->pluck('id')->toArray();
         $currentIndex = array_search($evaluatee->id, $allEmployees);
         $nextEmployeeId = null;
@@ -68,7 +68,6 @@ class AssessmentController extends Controller
         $currentPeriod = Carbon::now()->isoFormat('MMMM YYYY');
 
         DB::transaction(function () use ($request, $evaluatee, $currentPeriod) {
-            // Check if assessment already exists for this period to update or create new
             $assessment = Assessment::updateOrCreate(
                 [
                     'evaluatee_id' => $evaluatee->id,
@@ -81,7 +80,6 @@ class AssessmentController extends Controller
                 ]
             );
 
-            // Save details
             foreach ($request->scores as $categoryId => $score) {
                 AssessmentDetail::updateOrCreate(
                     [
@@ -95,7 +93,6 @@ class AssessmentController extends Controller
             }
         });
 
-        // Check if save_and_next button was clicked
         if ($request->has('save_and_next') && $request->next_employee_id) {
             return redirect()->route('admin.assessments.create', $request->next_employee_id)
                 ->with('success', 'Penilaian berhasil disimpan. Lanjut ke pegawai berikutnya.');

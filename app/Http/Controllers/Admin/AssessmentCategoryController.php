@@ -28,8 +28,10 @@ class AssessmentCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // Method untuk menyimpan data baru ke database
     public function store(Request $request)
     {
+        // Validasi data yang masuk dari form
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -37,13 +39,15 @@ class AssessmentCategoryController extends Controller
             'is_active' => 'nullable',
         ]);
 
+        // Menyimpan data ke database menggunakan model AssessmentCategory
         AssessmentCategory::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
             'type' => $validated['type'] ?? 'General',
             'is_active' => request()->has('is_active') ? true : false,
         ]);
-
+        
+        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('assessment-categories.index')
             ->with('success', 'Kategori Penilaian berhasil ditambahkan.');
     }

@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
+    // Property
     protected $fillable = [
         'name',
         'email',
@@ -28,6 +29,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // Casts untuk atribut tertentu ebuah class memiliki banyak bentuk, biasanya melalui overriding (mengganti) method.
+    //melakukan overriding terhadap method casts() yang aslinya didefinisikan di base Class Model. 
+    // ini menunjukkan perilaku yang berbeda (polymorphic) untuk tipe model
+    // Polymorphism / Overriding 
     protected function casts(): array
     {
         return [

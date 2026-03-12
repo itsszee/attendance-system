@@ -9,6 +9,7 @@
     <li class="breadcrumb-item active">Detail</li>
 @endsection
 
+
 @push('styles')
 <style>
     .info-card {
@@ -205,6 +206,7 @@
         @endif
     </div>
 @endif
+
 
 <div class="row">
     <div class="col-md-6">

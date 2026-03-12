@@ -14,6 +14,7 @@ class LocationSetting extends Model
         'latitude',
         'longitude',
         'radius',
+    ];
 
     protected $casts = [
         'latitude' => 'float',

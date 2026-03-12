@@ -76,7 +76,7 @@ class AdminController extends Controller
             'approval_status' => 'approved'
         ]);
 
-        return back()->with('success', 'WFH berhasil di-approve! ✅');
+        return back();
     }
 
     /**
