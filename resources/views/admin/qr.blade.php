@@ -9,10 +9,6 @@
 @endsection
 
 @section('content')
-
-
-
-    <!-- Auto-Generate QR Section -->
     <div class="row">
         <div class="col-md-6">
             <div class="card card-primary">
@@ -66,7 +62,6 @@
             </div>
         </div>
 
-        <!-- Manual Generate Section -->
         <div class="col-md-6">
             <div class="card card-info">
                 <div class="card-header">
@@ -103,7 +98,6 @@
         </div>
     </div>
 
-    <!-- History Table -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
@@ -111,7 +105,6 @@
             </h3>
         </div>
 
-        <!-- Filter Form -->
         <div class="card-header border-0">
             <form method="GET" action="{{ route('admin.qr.index') }}" class="form-inline">
                 <div class="form-group mr-3">
@@ -228,7 +221,6 @@
 
 @push('scripts')
     <script>
-        // Polling untuk update QR otomatis
         @if ($activeQr && $activeQr->auto_generate)
             let countdownInterval;
 
@@ -241,7 +233,7 @@
                             document.getElementById('qr-code').textContent = data.code;
                             startCountdown(data.seconds_remaining);
                         } else {
-                            // Auto-generate stopped
+                            
                             location.reload();
                         }
                     })
@@ -267,7 +259,6 @@
                     const timeString = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                     document.getElementById('countdown').textContent = timeString;
 
-                    // Change color when time is running out
                     if (remaining <= 30) {
                         document.getElementById('countdown').className = 'display-4 text-bold text-danger';
                     } else {
@@ -276,13 +267,11 @@
                 }, 1000);
             }
 
-            // Initial countdown
             const validUntil = new Date('{{ $activeQr->valid_until->toIso8601String() }}');
             const now = new Date();
             const initialSeconds = Math.floor((validUntil - now) / 1000);
             startCountdown(initialSeconds);
 
-            // Poll every 10 seconds untuk cek QR baru
             setInterval(updateQR, 10000);
         @endif
     </script>

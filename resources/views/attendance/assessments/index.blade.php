@@ -102,7 +102,6 @@
         border-radius: 12px;
     }
 </style>
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 
@@ -123,7 +122,6 @@
 
 <div class="container page-content">
     <div class="row">
-        <!-- Chart Section -->
         <div class="col-lg-5 mb-4">
             <div class="glass-card">
                 <div class="card-title">
@@ -148,7 +146,6 @@
             </div>
         </div>
 
-        <!-- History Section -->
         <div class="col-lg-7 mb-4">
             <div class="glass-card">
                 <div class="card-title">

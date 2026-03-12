@@ -15,9 +15,8 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        $karyawan = $user->karyawan ?? null; // Relasi ke tabel karyawan (kalau ada)
+        $karyawan = $user->karyawan ?? null; 
         
-        // Admin pakai layout admin, user biasa pakai layout user
         $view = $user->role === 'admin' ? 'admin.profile.edit' : 'profile.edit';
         
         return view($view, compact('user', 'karyawan'));
@@ -40,7 +39,6 @@ class ProfileController extends Controller
             'email' => $request->email,
         ]);
 
-        // Reset email verification jika email berubah
         if ($user->wasChanged('email')) {
             $user->email_verified_at = null;
             $user->save();

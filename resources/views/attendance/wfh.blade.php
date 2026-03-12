@@ -152,7 +152,6 @@
 <div class="container page-content">
     <div class="row justify-content-center">
         <div class="col-lg-7">
-            <!-- Already Checked In -->
             @if(isset($attendanceToday) && $attendanceToday && $attendanceToday->mode == 'WFH')
                 <div class="glass-card text-center py-5">
                     <div class="mb-4">
@@ -188,7 +187,6 @@
                     @endif
                 </div>
             @else
-                <!-- Check-in Form -->
                 <div class="glass-card">
                     @if (session('error'))
                         <div class="alert alert-danger border-0 mb-4" style="border-radius: 12px;">

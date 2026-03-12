@@ -57,7 +57,6 @@
     </div>
 </div>
 
-{{-- Khusus WFH --}}
 @if($attendance->mode === 'WFH')
     <div class="info-box">
         <h3>📝 WFH Details</h3>
@@ -76,7 +75,6 @@
     </div>
 @endif
 
-{{-- Lokasi (WFH & WFO) --}}
 @if($attendance->latitude && $attendance->longitude)
     <div class="info-box">
         <h3>📍 Lokasi</h3>

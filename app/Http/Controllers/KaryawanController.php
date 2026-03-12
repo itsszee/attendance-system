@@ -11,19 +11,16 @@ class KaryawanController extends Controller
     {
         $query = Karyawan::query();
 
-        // Filter by jabatan
         if ($request->filled('jabatan')) {
             $query->where('jabatan', $request->jabatan);
         }
 
-        // Filter by departemen
         if ($request->filled('departemen')) {
             $query->where('departemen', $request->departemen);
         }
 
         $karyawan = $query->paginate(10)->appends($request->query());
 
-        // Get unique jabatan and departemen for filter dropdowns
         $jabatanList = Karyawan::distinct()->pluck('jabatan')->sort();
         $departemenList = Karyawan::distinct()->pluck('departemen')->sort();
 
@@ -33,7 +30,6 @@ class KaryawanController extends Controller
     public function create()
     {
         $shifts = \App\Models\Shift::all();
-        // provide list of user emails not yet assigned to karyawan
         $assigned = Karyawan::pluck('email')->toArray();
         $users = \App\Models\User::whereNotIn('email', $assigned)
             ->orderBy('email')

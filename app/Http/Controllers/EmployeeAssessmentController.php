@@ -12,13 +12,11 @@ class EmployeeAssessmentController extends Controller
     {
         $user = auth()->user();
         
-        // Get all assessments for this user, ordered by date descending
         $assessments = Assessment::with(['evaluator', 'assessmentDetails.category'])
             ->where('evaluatee_id', $user->id)
             ->orderBy('assessment_date', 'desc')
             ->get();
             
-        // Get latest assessment for the radar chart
         $latestAssessment = $assessments->first();
         
         $chartData = [

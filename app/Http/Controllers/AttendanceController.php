@@ -42,7 +42,6 @@ class AttendanceController extends Controller
         if ($request->hasFile('selfie')) {
             $photoPath = $request->file('selfie')->store('selfies', 'public');
         } else {
-            // Assume it's base64 from the camera
             $imageData = $request->selfie;
             if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
                 $imageData = substr($imageData, strpos($imageData, ',') + 1);
@@ -65,7 +64,6 @@ class AttendanceController extends Controller
             $photoPath = $fileName;
         }
 
-        // Determine status based on assigned shift (fall back to 09:00 if none)
         $user = Auth::user();
         $shiftTime = '09:00';
         if ($user && $user->karyawan && $user->karyawan->shift) {
@@ -126,7 +124,6 @@ class AttendanceController extends Controller
             return redirect()->route('dashboard')->with('error', 'Kamu sudah absen hari ini');
         }
 
-        // get location setting (use first available)
         $location = \App\Models\LocationSetting::first();
 
         return view('attendance.wfo', [
@@ -162,7 +159,6 @@ class AttendanceController extends Controller
             return back()->with('error', 'QR tidak valid / kadaluarsa');
         }
 
-        // check against configured location setting
         $location = \App\Models\LocationSetting::first();
 
         if ($location) {
@@ -186,7 +182,6 @@ class AttendanceController extends Controller
             return back()->with('error', 'Kamu di luar area kantor');
         }
 
-        // Determine status based on assigned shift (default 09:00)
         $user = Auth::user();
         $shiftTime = '09:00';
         if ($user && $user->karyawan && $user->karyawan->shift) {

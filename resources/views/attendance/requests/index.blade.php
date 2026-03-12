@@ -107,7 +107,6 @@
     @endif
 
     <div class="row">
-        <!-- Form -->
         <div class="col-lg-4 mb-4">
             <div class="glass-card">
                 <h5 class="font-weight-bold mb-4">
@@ -149,7 +148,6 @@
             </div>
         </div>
 
-        <!-- History -->
         <div class="col-lg-8 mb-4">
             <div class="glass-card">
                 <h5 class="font-weight-bold mb-4">

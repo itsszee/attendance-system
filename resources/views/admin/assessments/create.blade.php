@@ -51,7 +51,6 @@
 
 @section('content')
 <div class="row">
-    <!-- Profil Singkat -->
     <div class="col-md-4">
         <div class="card card-primary card-outline shadow-sm sticky-top" style="top: 20px;">
             <div class="card-body box-profile text-center">
@@ -82,7 +81,6 @@
         </div>
     </div>
 
-    <!-- Form Penilaian -->
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-header bg-white border-0 pt-4 pb-2">

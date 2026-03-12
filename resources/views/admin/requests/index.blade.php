@@ -80,7 +80,6 @@
                             </td>
                         </tr>
 
-                        <!-- Modal Respon -->
                         @if($req->status === 'pending')
                         <div class="modal fade" id="actionModal{{ $req->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">

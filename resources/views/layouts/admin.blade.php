@@ -6,17 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Admin Dashboard')</title>
 
-    <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Google Font: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- AdminLTE -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
     <style>
@@ -160,9 +156,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
@@ -173,7 +167,6 @@
                 </li>
             </ul>
 
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto align-items-center">
                 <li class="nav-item px-3 border-right" style="border-color: rgba(0,0,0,0.05) !important;">
                     <a class="nav-link d-flex align-items-center" href="{{ route('profile.edit') }}" role="button">
@@ -192,18 +185,14 @@
             </ul>
         </nav>
 
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
             <a href="{{ route('admin.dashboard') }}" class="brand-link text-center"
                 style="background: #1f2937; border-bottom: 3px solid #667eea;">
                 <div class="logo-wrapper" style="padding: 15px 0;">
-                    <!-- Icon dengan background gradient -->
                     <div
                         style="width: 50px; height: 50px; margin: 0 auto 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
                         <i class="fas fa-user-clock" style="font-size: 24px; color: white;"></i>
                     </div>
-                    <!-- Text -->
                     <h3 class="brand-text m-0"
                         style="color: white; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;">
                         ATTENDANCE
@@ -211,9 +200,7 @@
                 </div>
             </a>
 
-            <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
@@ -302,9 +289,7 @@
             </div>
         </aside>
 
-        <!-- Content Wrapper -->
         <div class="content-wrapper">
-            <!-- Content Header -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -320,7 +305,6 @@
                 </div>
             </div>
 
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
 
@@ -346,7 +330,6 @@
             </section>
         </div>
 
-        <!-- Footer -->
         <footer class="main-footer">
             <strong>Copyright &copy; 2026 Attendance System.</strong>
             All rights reserved.
@@ -356,11 +339,8 @@
         </footer>
     </div>
 
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap 4 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 
     @stack('scripts')

@@ -10,7 +10,6 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Stats untuk admin
         $stats = [
             'total_users' => User::where('role', 'user')->count(),
             'today_attendance' => Attendance::whereDate('date', now())->count(),
@@ -19,7 +18,6 @@ class AdminController extends Controller
             'late_today' => Attendance::whereDate('date', now())->where('status', 'late')->count(),
         ];
 
-        // Recent attendance
         $recentAttendance = Attendance::with('user')
             ->orderBy('created_at', 'desc')
             ->limit(10)
@@ -32,17 +30,14 @@ class AdminController extends Controller
     {
         $query = Attendance::with('user');
 
-        // Filter by mode
         if ($request->filled('mode')) {
             $query->where('mode', $request->mode);
         }
 
-        // Filter by status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter by approval status
         if ($request->filled('approval_status')) {
             $query->where('approval_status', $request->approval_status);
         }
@@ -52,7 +47,6 @@ class AdminController extends Controller
             ->paginate(50)
             ->appends($request->query());
 
-        // FIX: Ganti 'admin.attendance.index' jadi 'admin.attendance'
         return view('admin.attendance.index', compact('attendances'));
     }
 
@@ -60,7 +54,6 @@ class AdminController extends Controller
     {
         $attendance = Attendance::with('user')->findOrFail($id);
 
-        // FIX: Ganti 'admin.attendance.show' jadi 'admin.attendance-detail'
         return view('admin.attendance-detail', compact('attendance'));
     }
 

@@ -203,7 +203,6 @@
 </div>
 
 <div class="container dashboard-content">
-    <!-- Alerts -->
     @if (session('success'))
         <div class="alert alert-success alert-modern alert-dismissible fade show mb-4">
             <div class="d-flex align-items-center">
@@ -218,7 +217,6 @@
     @endif
 
     <div class="row">
-        <!-- Attendance Status -->
         <div class="col-lg-5 mb-4">
             <div class="glass-card">
                 <div class="section-title">Status Kehadiran</div>
@@ -260,7 +258,6 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
         <div class="col-lg-7 mb-4">
             <div class="glass-card">
                 <div class="section-title">Aksi Cepat</div>
@@ -308,7 +305,6 @@
         </div>
     </div>
 
-    <!-- Additional Info (WFH Tasks) -->
     @if ($attendanceToday && $attendanceToday->mode === 'WFH')
     <div class="glass-card mt-4">
         <div class="row align-items-center">

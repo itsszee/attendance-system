@@ -13,15 +13,12 @@ class AdminQrController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil QR code yang auto-generate (active)
         $activeQr = OfficeQrCode::where('auto_generate', true)
             ->where('is_active', true)
             ->first();
 
-        // Ambil history QR codes dengan filter
         $query = OfficeQrCode::query();
 
-        // Filter by status
         if ($request->filled('status')) {
             if ($request->status === 'active') {
                 $query->where('is_active', true)->where('valid_until', '>=', now());
@@ -32,7 +29,6 @@ class AdminQrController extends Controller
             }
         }
 
-        // Filter by auto_generate
         if ($request->filled('auto')) {
             if ($request->auto === 'yes') {
                 $query->where('auto_generate', true);
@@ -46,23 +42,19 @@ class AdminQrController extends Controller
         return view('admin.qr', compact('codes', 'activeQr'));
     }
 
-    // Start auto-generate
     public function startAutoGenerate(Request $request)
     {
-        // Stop semua auto-generate yang lama
         OfficeQrCode::where('auto_generate', true)->update([
             'auto_generate' => false,
             'is_active' => false,
         ]);
 
-        // Generate QR pertama
-        $qr = $this->generateQrCode(5); // 5 menit
+        $qr = $this->generateQrCode(5); 
         $qr->update(['auto_generate' => true]);
 
         return redirect()->route('admin.qr.index')->with('success', 'Auto-generate QR dimulai!');
     }
 
-    // Stop auto-generate
     public function stopAutoGenerate()
     {
         OfficeQrCode::where('auto_generate', true)->update([
@@ -73,7 +65,6 @@ class AdminQrController extends Controller
         return redirect()->route('admin.qr.index')->with('success', 'Auto-generate QR dihentikan!');
     }
 
-    // Generate QR manual (legacy)
     public function generate(Request $request)
     {
         $request->validate([
@@ -86,7 +77,6 @@ class AdminQrController extends Controller
         return redirect()->route('admin.qr.index')->with('success', "Token created: {$qr->code} (valid {$minutes} minutes)");
     }
 
-    // API untuk frontend polling (cek QR terbaru)
     public function getActiveQr()
     {
         $activeQr = OfficeQrCode::where('auto_generate', true)
@@ -94,15 +84,12 @@ class AdminQrController extends Controller
             ->where('valid_until', '>=', now())
             ->first();
 
-        // Kalau QR udah expired, generate baru otomatis
         if (!$activeQr) {
             $hasAutoGenerate = OfficeQrCode::where('auto_generate', true)->exists();
             
             if ($hasAutoGenerate) {
-                // Nonaktifkan yang lama
                 OfficeQrCode::where('auto_generate', true)->update(['is_active' => false]);
                 
-                // Bikin yang baru
                 $activeQr = $this->generateQrCode(5);
                 $activeQr->update(['auto_generate' => true]);
             }
@@ -120,7 +107,6 @@ class AdminQrController extends Controller
         return response()->json(null);
     }
 
-    // Helper function untuk generate QR
     private function generateQrCode($minutes)
     {
         $code = strtoupper(bin2hex(random_bytes(4)));

@@ -191,7 +191,6 @@
 
 @section('content')
 
-<!-- Approval Status Badge -->
 @if($attendance->mode === 'WFH')
     <div class="status-badge {{ $attendance->approval_status }}">
         @if($attendance->approval_status == 'pending')
@@ -208,7 +207,6 @@
 @endif
 
 <div class="row">
-    <!-- Basic Information -->
     <div class="col-md-6">
         <div class="card info-card">
             <div class="card-header">
@@ -266,8 +264,6 @@
             </div>
         </div>
     </div>
-
-    <!-- WFH Details -->
     @if($attendance->mode === 'WFH')
     <div class="col-md-6">
         <div class="card info-card">
@@ -299,7 +295,6 @@
     @endif
 </div>
 
-<!-- Location -->
 @if($attendance->latitude && $attendance->longitude)
 <div class="card info-card">
     <div class="card-header">
@@ -320,8 +315,6 @@
     </div>
 </div>
 @endif
-
-<!-- Approval Actions -->
 @if($attendance->mode === 'WFH' && $attendance->approval_status == 'pending')
 <div class="approval-section">
     <h5><i class="fas fa-user-check"></i> Action Required</h5>
@@ -343,7 +336,6 @@
 </div>
 @endif
 
-<!-- Navigation -->
 <div class="mb-3">
     <a href="{{ route('admin.attendance.index') }}" class="btn btn-secondary">
         <i class="fas fa-arrow-left"></i> Kembali

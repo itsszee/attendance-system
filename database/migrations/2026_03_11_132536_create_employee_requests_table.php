@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['izin', 'sakit', 'cuti']);
             $table->date('start_date');
-            $table->date('end_date')->nullable(); // For cuti duration
+            $table->date('end_date')->nullable(); 
             $table->text('reason');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('admin_notes')->nullable();

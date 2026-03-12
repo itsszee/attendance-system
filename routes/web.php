@@ -101,13 +101,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 
-// Admin Request Routes (Moved and explicit)
+// Admin Request Routes
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin/requests', [App\Http\Controllers\Admin\RequestController::class, 'index'])->name('admin.requests.index');
     Route::put('admin/requests/{employeeRequest}', [App\Http\Controllers\Admin\RequestController::class, 'update'])->name('admin.requests.update');
 });
 
-// Auth Employee Routes (Outside Admin Namespace)
+// Auth Employee Routes
 Route::middleware('auth')->group(function () {
     // Employee Request Routes
     Route::get('/requests', [App\Http\Controllers\EmployeeRequestController::class, 'index'])->name('requests.index');

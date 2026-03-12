@@ -150,19 +150,16 @@
             @endif
 
             <div class="glass-card">
-                <!-- Location Status -->
                 <div id="location-status" class="status-box loading">
                     <i class="fas fa-spinner fa-spin"></i>
                     Sedang mendeteksi lokasi kantor...
                 </div>
 
-                <!-- QR Status -->
                 <div id="qr-status" class="status-box loading">
                     <i class="fas fa-qrcode"></i>
                     Siapkan QR Code kantor untuk scan
                 </div>
 
-                <!-- Scanner Section -->
                 <div class="qr-section">
                     <div class="qr-title">
                         <i class="fas fa-camera"></i> Scan Quick Response Code
@@ -170,7 +167,6 @@
                     <div id="qr-reader"></div>
                 </div>
 
-                <!-- Form -->
                 <form method="POST" action="{{ route('attendance.wfo.store') }}" id="wfo-form">
                     @csrf
                     <input type="hidden" name="qr_code" id="qr_code">
@@ -183,7 +179,6 @@
                     </button>
                 </form>
 
-                <!-- Note -->
                 <div class="info-note">
                     <i class="fas fa-info-circle mr-1"></i>
                     <strong>Penting:</strong> Anda harus berada dalam radius kantor yang ditentukan agar tombol check-in aktif. Pastikan GPS Anda aktif dan akurat.

@@ -76,14 +76,12 @@
 <div class="profile-container">
     <div class="container">
         
-        <!-- Back to Dashboard -->
         <div class="mb-4">
              <a href="{{ route('dashboard') }}" class="btn btn-light btn-sm rounded-pill px-3">
                 <i class="fas fa-chevron-left mr-1"></i> Dashboard
             </a>
         </div>
 
-        <!-- Data Karyawan (if exists) -->
         @if(isset($karyawan) && $karyawan)
         <div class="profile-card">
             <h3>
@@ -125,7 +123,6 @@
         </div>
         @endif
 
-        <!-- Update Profile Information -->
         <div class="profile-card">
             <h3>
                 <i class="fas fa-user-edit"></i>
@@ -175,7 +172,6 @@
             </form>
         </div>
 
-        <!-- Update Password -->
         <div class="profile-card">
             <h3>
                 <i class="fas fa-key"></i>
@@ -232,7 +228,6 @@
             </form>
         </div>
 
-        <!-- Delete Account -->
         <div class="profile-card">
             <h3>
                 <i class="fas fa-trash-alt"></i>
@@ -249,7 +244,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">

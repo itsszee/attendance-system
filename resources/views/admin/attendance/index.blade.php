@@ -21,7 +21,6 @@
         </div>
     </div>
 
-    <!-- Filter Form -->
     <div class="card-header">
         <form method="GET" action="{{ route('admin.attendance.index') }}" class="form-inline">
             <div class="form-group mr-3">

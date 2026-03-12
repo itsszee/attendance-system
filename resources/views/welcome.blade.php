@@ -159,7 +159,7 @@
             <i class="fas fa-user-clock" style="font-size: 24px; color: white;"></i>
         </div>
         <h1>Attendance System</h1>
-        <p class="subtitle">Sistem absensi modern untuk WFH & WFO</p>
+        <p class="subtitle">Sistem Absensi Modern</p>
 
         <div class="features">
             <div class="feature">
