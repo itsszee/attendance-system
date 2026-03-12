@@ -1,0 +1,176 @@
+\chapter{🚀 Quick Start:\+ Google Authentication }
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t}{}\label{md__q_u_i_c_k___s_t_a_r_t}\index{🚀 Quick Start: Google Authentication@{🚀 Quick Start: Google Authentication}}
+\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md64}%
+\Hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md64}%
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md65}{}\doxysection{\texorpdfstring{⚡ 5 Minute Setup}{⚡ 5 Minute Setup}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md65}
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md66}{}\doxysubsection{\texorpdfstring{Step 1:\+ Get Google OAuth Credentials (5 min)}{Step 1:\+ Get Google OAuth Credentials (5 min)}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md66}
+
+\begin{DoxyEnumerate}
+\item Go to \href{https://console.cloud.google.com/}{\texttt{https:\+/\+/\+console.\+cloud.\+google.\+com/\+}}
+\item Create new project (or use existing)
+\item Search \& enable "{}\+Google+ API"{}
+\item Go to "{}\+Credentials"{} → "{}\+Create Credentials"{} → "{}\+OAuth Client ID"{}
+\item Choose "{}\+Web application"{}
+\item Add Authorized Java\+Script origins:\+
+\begin{DoxyItemize}
+\item {\ttfamily \href{http://localhost:8000}{\texttt{http:\+/\+/\+localhost:\+8000}}}
+\item {\ttfamily \href{http://localhost}{\texttt{http:\+/\+/\+localhost}}}
+\item {\ttfamily \href{https://yourdomain.com}{\texttt{https:\+/\+/\+yourdomain.\+com}}} (for production)
+\end{DoxyItemize}
+\item Add Authorized redirect URIs:\+
+\begin{DoxyItemize}
+\item {\ttfamily \href{http://localhost:8000/auth/google/callback}{\texttt{http:\+/\+/\+localhost:\+8000/\+auth/\+google/\+callback}}}
+\item {\ttfamily \href{https://yourdomain.com/auth/google/callback}{\texttt{https:\+/\+/\+yourdomain.\+com/\+auth/\+google/\+callback}}} (for production)
+\end{DoxyItemize}
+\item Copy Client ID dan Client Secret
+\end{DoxyEnumerate}\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md67}{}\doxysubsection{\texorpdfstring{Step 2:\+ Update .env File (1 min)}{Step 2:\+ Update .env File (1 min)}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md67}
+Add these lines to {\ttfamily .env}:\+
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{GOOGLE\_CLIENT\_ID=your\_client\_id\_here}
+\DoxyCodeLine{GOOGLE\_CLIENT\_SECRET=your\_client\_secret\_here}
+\DoxyCodeLine{GOOGLE\_REDIRECT\_URI=http://localhost:8000/auth/google/callback}
+
+\end{DoxyCode}
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md68}{}\doxysubsection{\texorpdfstring{Step 3:\+ Run Migration (1 min)}{Step 3:\+ Run Migration (1 min)}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md68}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{php\ artisan\ migrate}
+
+\end{DoxyCode}
+
+
+This adds Google OAuth fields to database.\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md69}{}\doxysubsection{\texorpdfstring{Step 4:\+ Test (1 min)}{Step 4:\+ Test (1 min)}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md69}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{php\ artisan\ serve}
+
+\end{DoxyCode}
+
+
+Then visit:\+
+\begin{DoxyItemize}
+\item {\ttfamily \href{http://localhost:8000/login}{\texttt{http:\+/\+/\+localhost:\+8000/\+login}}} -\/ Try Google sign-\/in
+\item {\ttfamily \href{http://localhost:8000/register}{\texttt{http:\+/\+/\+localhost:\+8000/\+register}}} -\/ Try Google sign-\/up
+\end{DoxyItemize}\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md70}{}\doxysection{\texorpdfstring{📋 What Works Now}{📋 What Works Now}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md70}
+✅ Email + Password Login ✅ Email + Password Register ~\newline
+ ✅ Google Sign-\/\+In ✅ Google Sign-\/\+Up (auto create account) ✅ Forgot Password ✅ Reset Password ✅ Email Verification ✅ Password Confirmation ✅ Beautiful, Consistent UI\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md71}{}\doxysection{\texorpdfstring{🎨 UI Features}{🎨 UI Features}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md71}
+
+\begin{DoxyItemize}
+\item Gradient purple background with animations
+\item Smooth card animations
+\item Responsive mobile design
+\item Icon-\/based form fields
+\item Error messages with animations
+\item Success alerts
+\item Loading states
+\end{DoxyItemize}\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md72}{}\doxysection{\texorpdfstring{📱 Pages}{📱 Pages}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md72}
+
+\begin{DoxyTable}{3}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Page  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}URL  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Features  \\
+Login  &{\ttfamily /\+login}  &Email/\+\+Password, Google, Remember me, Forgot password link  \\
+Register  &{\ttfamily /\+register}  &Email/\+\+Password, Google, Terms checkbox  \\
+Forgot Password  &{\ttfamily /\+forgot-\/password}  &Email input, Reset link sender  \\
+Reset Password  &{\ttfamily /\+reset-\/password/\+\{token\}}  &New password form  \\
+Verify Email  &{\ttfamily /\+verify-\/email}  &Resend link, Logout  \\
+Confirm Password  &{\ttfamily /\+password/\+confirm}  &Secure confirmation  \\
+\end{DoxyTable}
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md73}{}\doxysection{\texorpdfstring{🔑 Controller Routes}{🔑 Controller Routes}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md73}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{GET\ \ /auth/google\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Redirect\ to\ Google}}
+\DoxyCodeLine{GET\ \ /auth/google/callback\ \ \ \ \ \textcolor{comment}{//\ Handle\ callback}}
+\DoxyCodeLine{GET\ \ /login\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Login\ page}}
+\DoxyCodeLine{POST\ /login\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Login\ submission}}
+\DoxyCodeLine{GET\ \ /\textcolor{keyword}{register}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Register\ page}}
+\DoxyCodeLine{POST\ /\textcolor{keyword}{register}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Register\ submission}}
+\DoxyCodeLine{GET\ \ /forgot-\/password\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Forgot\ page}}
+\DoxyCodeLine{POST\ /password-\/email\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Send\ reset}}
+\DoxyCodeLine{GET\ \ /reset-\/password/\{token\}\ \ \ \textcolor{comment}{//\ Reset\ page}}
+\DoxyCodeLine{POST\ /password/store\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ password}}
+
+\end{DoxyCode}
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md74}{}\doxysection{\texorpdfstring{🐛 Troubleshooting}{🐛 Troubleshooting}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md74}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Issue  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Solution  \\
+"{}\+Client ID not found"{}  &Check {\ttfamily .env} has {\ttfamily GOOGLE\+\_\+\+CLIENT\+\_\+\+ID}  \\
+"{}\+Redirect URI mismatch"{}  &Ensure Google Console callback matches {\ttfamily .env}  \\
+Database error on login  &Run {\ttfamily php artisan migrate}  \\
+Blank form fields  &Clear browser cache  \\
+"{}\+Call to undefined method"{}  &Run {\ttfamily composer install}  \\
+\end{DoxyTable}
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md75}{}\doxysection{\texorpdfstring{🔒 Security Tips}{🔒 Security Tips}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md75}
+
+\begin{DoxyEnumerate}
+\item Never commit {\ttfamily .env} to git
+\item Use HTTPS in production
+\item Keep Google credentials secret
+\item Enable email verification
+\item Use strong password requirements
+\item Monitor login attempts
+\end{DoxyEnumerate}\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md76}{}\doxysection{\texorpdfstring{📊 User Data Stored}{📊 User Data Stored}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md76}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{users\ table:}
+\DoxyCodeLine{├──\ id\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (auto\ increment)}
+\DoxyCodeLine{├──\ name\ \ \ \ \ \ \ \ \ \ \ \ \ (from\ Google\ or\ form)}
+\DoxyCodeLine{├──\ email\ \ \ \ \ \ \ \ \ \ \ \ (unique)}
+\DoxyCodeLine{├──\ email\_verified\_at\ (auto\ if\ Google)}
+\DoxyCodeLine{├──\ password\ \ \ \ \ \ \ \ \ (nullable\ if\ Google)}
+\DoxyCodeLine{├──\ google\_id\ \ \ \ \ \ \ \ (unique,\ from\ Google)}
+\DoxyCodeLine{├──\ google\_token\ \ \ \ \ (expires)}
+\DoxyCodeLine{├──\ google\_refresh\_token}
+\DoxyCodeLine{├──\ role\ \ \ \ \ \ \ \ \ \ \ \ \ (default:\ 'user')}
+\DoxyCodeLine{└──\ timestamps}
+
+\end{DoxyCode}
+\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md77}{}\doxysection{\texorpdfstring{🚀 Production Checklist}{🚀 Production Checklist}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md77}
+
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] HTTPS enabled
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Google Console redirect updated
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Environment variables set on server
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Database migrated
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Email verification working
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Error logging configured
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] CORS headers set (if needed)
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Rate limiting enabled
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Session timeout configured
+\end{DoxyItemize}
+\begin{DoxyItemize}
+\item[\DoxyUnchecked] Tested login/\+register/\+password reset
+\end{DoxyItemize}\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md78}{}\doxysection{\texorpdfstring{📚 Documentation}{📚 Documentation}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md78}
+For detailed setup:\+ See {\ttfamily GOOGLE\+\_\+\+AUTH\+\_\+\+SETUP.\+md} For changes summary:\+ See {\ttfamily AUTH\+\_\+\+SYSTEM\+\_\+\+SUMMARY.\+md} For env template:\+ See {\ttfamily .env.\+google.\+example}\hypertarget{md__q_u_i_c_k___s_t_a_r_t_autotoc_md79}{}\doxysection{\texorpdfstring{✨ Next Steps}{✨ Next Steps}}\label{md__q_u_i_c_k___s_t_a_r_t_autotoc_md79}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Customize}}:\+ Modify colors in {\ttfamily resources/\+views/\+components/\+auth-\/layout.\+blade.\+php}
+\item {\bfseries{Add more OAuth}}:\+ Use same pattern for Git\+Hub, Facebook, etc.
+\item {\bfseries{Multi-\/factor}}:\+ Add 2FA for security
+\item {\bfseries{Rate limiting}}:\+ Add login attempt limits
+\item {\bfseries{Audit logging}}:\+ Track authentication events
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+
+
+{\bfseries{Need help?}} Check the detailed guides or review comments in the code.
+
+Happy authenticating! 🎉 
