@@ -66,6 +66,10 @@ Route::middleware('auth')->group(function () {
     // Employee Assessments
     Route::get('/my-assessments', [App\Http\Controllers\EmployeeAssessmentController::class, 'index'])
         ->name('employee.assessments.index');
+
+    // Wallet / Dompet Integritas
+    Route::get('/wallet', [App\Http\Controllers\WalletController::class, 'index'])->name('wallet.index');
+    Route::post('/wallet/buy/{item}', [App\Http\Controllers\WalletController::class, 'buyToken'])->name('wallet.buy');
 });
 
 // Admin routes
@@ -85,6 +89,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/export', function () {
         return Excel::download(new AttendanceExport, 'attendance.xlsx');
     })->name('admin.export');
+    
+    // Integrity Management
+    Route::get('/integrity', [App\Http\Controllers\Admin\IntegrityController::class, 'index'])->name('admin.integrity.index');
+    
+    // Integrity Rules
+    Route::post('/integrity/rules', [App\Http\Controllers\Admin\IntegrityController::class, 'storeRule'])->name('admin.integrity.rules.store');
+    Route::put('/integrity/rules/{id}', [App\Http\Controllers\Admin\IntegrityController::class, 'updateRule'])->name('admin.integrity.rules.update');
+    Route::delete('/integrity/rules/{id}', [App\Http\Controllers\Admin\IntegrityController::class, 'destroyRule'])->name('admin.integrity.rules.destroy');
+    
+    // Integrity Items
+    Route::post('/integrity/items', [App\Http\Controllers\Admin\IntegrityController::class, 'storeItem'])->name('admin.integrity.items.store');
+    Route::put('/integrity/items/{id}', [App\Http\Controllers\Admin\IntegrityController::class, 'updateItem'])->name('admin.integrity.items.update');
+    Route::delete('/integrity/items/{id}', [App\Http\Controllers\Admin\IntegrityController::class, 'destroyItem'])->name('admin.integrity.items.destroy');
 });
 
 // Admin CRUD User, Karyawan & lokasi

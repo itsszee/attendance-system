@@ -20,6 +20,17 @@ class DashboardController extends Controller
             ->whereDate('date', now())
             ->first();
 
-        return view('dashboard', compact('attendanceToday'));
+        $latestLedgers = \App\Models\PointLedger::select('user_id', \Illuminate\Support\Facades\DB::raw('MAX(id) as max_id'))
+            ->groupBy('user_id');
+            
+        $leaderboard = \App\Models\PointLedger::joinSub($latestLedgers, 'latest', function ($join) {
+                $join->on('point_ledgers.id', '=', 'latest.max_id');
+            })
+            ->with('user')
+            ->orderBy('current_balance', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('dashboard', compact('attendanceToday', 'leaderboard'));
     }
 }

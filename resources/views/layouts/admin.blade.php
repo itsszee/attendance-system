@@ -261,6 +261,14 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('admin.integrity.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.integrity.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-wallet"></i>
+                                <p>Dompet Integritas</p>
+                            </a>
+                        </li>
+
                         <li class="nav-header">PENGAJUAN & PENILAIAN</li>
                         <li class="nav-item">
                             <a href="{{ route('admin.requests.index') }}"

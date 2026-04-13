@@ -76,7 +76,7 @@ class AdminController extends Controller
             'approval_status' => 'approved'
         ]);
 
-        return back();
+        return back()->with('success', 'Attendance WFH berhasil disetujui');
     }
 
     /**
@@ -98,6 +98,6 @@ class AdminController extends Controller
             'approval_status' => 'rejected'
         ]);
 
-        return back()->with();
+        return back()->with('success', 'Attendance WFH berhasil ditolak');
     }
 }

@@ -186,17 +186,6 @@
             </div>
             <div class="text-md-right">
                 <div class="digital-clock" id="clock">00:00:00</div>
-                <div class="header-actions mt-3">
-                    <a href="{{ route('profile.edit') }}" class="btn btn-light btn-sm rounded-pill px-3 mr-2">
-                        <i class="fas fa-user-circle mr-1"></i> Profil
-                    </a>
-                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-light btn-sm rounded-pill px-3">
-                            <i class="fas fa-sign-out-alt mr-1"></i> Keluar
-                        </button>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
@@ -292,6 +281,10 @@
                 @endif
 
                 <div class="action-grid mt-4">
+                    <a href="{{ route('wallet.index') }}" class="btn-premium btn-nav">
+                        <i class="fas fa-wallet" style="color: #22c55e;"></i>
+                        <span>Dompet Integritas</span>
+                    </a>
                     <a href="{{ route('requests.index') }}" class="btn-premium btn-nav">
                         <i class="fas fa-file-signature text-warning"></i>
                         <span>Pengajuan</span>
@@ -304,7 +297,6 @@
             </div>
         </div>
     </div>
-
     @if ($attendanceToday && $attendanceToday->mode === 'WFH')
     <div class="glass-card mt-4">
         <div class="row align-items-center">
@@ -339,6 +331,68 @@
         </div>
     </div>
     @endif
+</div>
+
+<div class="container mb-5">
+    <!-- Leaderboard Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="glass-card" style="border-top: 4px solid #a855f7;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="section-title mb-0"><i class="fas fa-trophy text-warning mr-2"></i> Papan Peringkat Integritas</div>
+                    <a href="{{ route('wallet.index') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Lihat Dompet Saya</a>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover border-bottom mb-0">
+                        <thead>
+                            <tr>
+                                <th class="border-0 text-muted" style="width: 80px;">Rank</th>
+                                <th class="border-0 text-muted">Karyawan</th>
+                                <th class="border-0 text-muted text-right">Saldo Poin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($leaderboard as $index => $ledger)
+                            <tr>
+                                <td class="align-middle">
+                                    @if($index == 0)
+                                        <div class="avatar-circle float-left shadow-sm" style="width: 40px; height: 40px; background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%); color: white; font-size: 16px;">
+                                            <i class="fas fa-crown"></i>
+                                        </div>
+                                    @elseif($index == 1)
+                                        <div class="avatar-circle float-left shadow-sm" style="width: 40px; height: 40px; background: linear-gradient(135deg, #e2e2e2 0%, #9f9f9f 100%); color: white; font-size: 16px;">
+                                            2
+                                        </div>
+                                    @elseif($index == 2)
+                                        <div class="avatar-circle float-left shadow-sm" style="width: 40px; height: 40px; background: linear-gradient(135deg, #f4a460 0%, #8b4513 100%); color: white; font-size: 16px;">
+                                            3
+                                        </div>
+                                    @else
+                                        <div class="avatar-circle float-left bg-light text-muted" style="width: 40px; height: 40px; font-size: 16px; border: 1px solid #e2e8f0;">
+                                            {{ $index + 1 }}
+                                        </div>
+                                    @endif
+                                </td>
+                                <td class="align-middle">
+                                    <div class="font-weight-bold">{{ $ledger->user->name }}</div>
+                                    <small class="text-muted">{{ $ledger->user->karyawan->jabatan ?? 'Karyawan' }}</small>
+                                </td>
+                                <td class="align-middle text-right">
+                                    <span class="badge badge-success px-3 py-2 rounded-pill" style="font-size: 14px;">{{ $ledger->current_balance }} PTS</span>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-4 text-muted">Belum ada data poin terkumpul.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')

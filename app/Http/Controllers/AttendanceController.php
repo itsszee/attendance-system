@@ -88,7 +88,7 @@ class AttendanceController extends Controller
         }
         $status = now()->format('H:i') <= $shiftTime ? 'on_time' : 'late';
 
-        Attendance::create([
+        $attendance = Attendance::create([
             'user_id' => Auth::id(),
             'date' => now()->toDateString(),
             'check_in_at' => now(),
@@ -100,6 +100,8 @@ class AttendanceController extends Controller
             'longitude' => $request->longitude,
             'selfie_path' => $photoPath,
         ]);
+
+        app(\App\Services\IntegrityService::class)->processAttendance($attendance, $user);
 
 
 
@@ -217,7 +219,7 @@ class AttendanceController extends Controller
         }
         $status = now()->format('H:i') <= $shiftTime ? 'on_time' : 'late';
 
-        Attendance::create([
+        $attendance = Attendance::create([
             'user_id' => Auth::id(),
             'date' => now()->toDateString(),
             'check_in_at' => now(),
@@ -227,6 +229,8 @@ class AttendanceController extends Controller
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
+
+        app(\App\Services\IntegrityService::class)->processAttendance($attendance, $user);
 
         return redirect()->route('dashboard')->with('success', 'Absen WFO berhasil');
     }
