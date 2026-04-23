@@ -7,53 +7,71 @@
     <li class="breadcrumb-item active">Dashboard</li>
 @endsection
 
+@push('styles')
+<style>
+    .stat-card {
+        border-radius: var(--radius-lg);
+        padding: 24px 22px;
+        border: 0;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        color: white;
+        height: 100%;
+    }
+    .stat-card:hover { transform: translateY(-4px); }
+    .stat-card .stat-number { font-size: 2.4rem; font-weight: 800; line-height: 1; }
+    .stat-card .stat-label  { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-top: 4px; }
+    .stat-card .stat-icon   { font-size: 2.4rem; opacity: 0.15; }
+</style>
+@endpush
+
 @section('content')
 
-<div class="row">
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>{{ $stats['total_users'] }}</h3>
-                <p>Total Karyawan</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-users"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>{{ $stats['today_attendance'] }}</h3>
-                <p>Absen Hari Ini</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-clipboard-check"></i>
+<div class="row mb-4">
+    <div class="col-lg-3 col-6 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ $stats['total_users'] }}</div>
+                    <div class="stat-label">Total Karyawan</div>
+                </div>
+                <i class="fas fa-users stat-icon"></i>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>{{ $stats['wfh_today'] }} / {{ $stats['wfo_today'] }}</h3>
-                <p>WFH / WFO</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-home"></i>
+    <div class="col-lg-3 col-6 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ $stats['today_attendance'] }}</div>
+                    <div class="stat-label">Absen Hari Ini</div>
+                </div>
+                <i class="fas fa-clipboard-check stat-icon"></i>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3>{{ $stats['late_today'] }}</h3>
-                <p>Terlambat</p>
+    <div class="col-lg-3 col-6 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ $stats['wfh_today'] }} / {{ $stats['wfo_today'] }}</div>
+                    <div class="stat-label">WFH / WFO</div>
+                </div>
+                <i class="fas fa-home stat-icon"></i>
             </div>
-            <div class="icon">
-                <i class="fas fa-exclamation-triangle"></i>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-6 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #f43f5e, #e11d48);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ $stats['late_today'] }}</div>
+                    <div class="stat-label">Terlambat</div>
+                </div>
+                <i class="fas fa-exclamation-triangle stat-icon"></i>
             </div>
         </div>
     </div>
