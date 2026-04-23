@@ -83,4 +83,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(EmployeeRequest::class);
     }
+
+    // ─── Helpdesk Relasi ───────────────────────────────────────────────────────
+
+    public function reportedTickets()
+    {
+        return $this->hasMany(Ticket::class, 'reporter_id');
+    }
+
+    public function operatedTickets()
+    {
+        return $this->hasMany(Ticket::class, 'operator_id');
+    }
+
+    public function satisfactionRatings()
+    {
+        return $this->hasMany(SatisfactionRating::class);
+    }
 }

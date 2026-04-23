@@ -291,6 +291,27 @@
                                 <p>Beri Penilaian</p>
                             </a>
                         </li>
+
+                        <li class="nav-header">HELPDESK</li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.helpdesk.dashboard') }}"
+                                class="nav-link {{ request()->routeIs('admin.helpdesk.dashboard') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>Dashboard Tiket</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.helpdesk.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.helpdesk.index') || request()->routeIs('admin.helpdesk.show') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-headset"></i>
+                                <p>Tiket Masuk
+                                    @php $openCount = \App\Models\Ticket::open()->count(); @endphp
+                                    @if($openCount > 0)
+                                        <span class="badge badge-danger right" style="font-size:10px;">{{ $openCount }}</span>
+                                    @endif
+                                </p>
+                            </a>
+                        </li>
                                            </ul>
                 </nav>
             </div>

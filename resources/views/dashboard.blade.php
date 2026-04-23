@@ -293,6 +293,10 @@
                         <i class="fas fa-star-half-alt text-info"></i>
                         <span>Nilai Saya</span>
                     </a>
+                    <a href="{{ route('user.tickets.index') }}" class="btn-premium btn-nav">
+                        <i class="fas fa-headset text-danger"></i>
+                        <span>Tiket Helpdesk</span>
+                    </a>
                 </div>
             </div>
         </div>

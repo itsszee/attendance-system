@@ -10,6 +10,8 @@ use App\Http\Controllers\CheckInController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationSettingController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\Admin\HelpdeskController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AttendanceExport;
@@ -70,6 +72,15 @@ Route::middleware('auth')->group(function () {
     // Wallet / Dompet Integritas
     Route::get('/wallet', [App\Http\Controllers\WalletController::class, 'index'])->name('wallet.index');
     Route::post('/wallet/buy/{item}', [App\Http\Controllers\WalletController::class, 'buyToken'])->name('wallet.buy');
+
+    // Helpdesk User Routes
+    Route::get('/tickets/search', [TicketController::class, 'search'])->name('user.tickets.search');
+    Route::get('/tickets', [TicketController::class, 'index'])->name('user.tickets.index');
+    Route::get('/tickets/create', [TicketController::class, 'create'])->name('user.tickets.create');
+    Route::post('/tickets', [TicketController::class, 'store'])->name('user.tickets.store');
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('user.tickets.show');
+    Route::post('/tickets/{ticket}/reply', [TicketController::class, 'reply'])->name('user.tickets.reply');
+    Route::post('/tickets/{ticket}/rate', [TicketController::class, 'rate'])->name('user.tickets.rate');
 });
 
 // Admin routes
@@ -122,6 +133,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin/requests', [App\Http\Controllers\Admin\RequestController::class, 'index'])->name('admin.requests.index');
     Route::put('admin/requests/{employeeRequest}', [App\Http\Controllers\Admin\RequestController::class, 'update'])->name('admin.requests.update');
+});
+
+// Admin Helpdesk Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/helpdesk/dashboard', [HelpdeskController::class, 'dashboard'])->name('admin.helpdesk.dashboard');
+    Route::get('/helpdesk', [HelpdeskController::class, 'index'])->name('admin.helpdesk.index');
+    Route::get('/helpdesk/{ticket}', [HelpdeskController::class, 'show'])->name('admin.helpdesk.show');
+    Route::post('/helpdesk/{ticket}/reply', [HelpdeskController::class, 'reply'])->name('admin.helpdesk.reply');
+    Route::patch('/helpdesk/{ticket}/status', [HelpdeskController::class, 'updateStatus'])->name('admin.helpdesk.status');
 });
 
 // Auth Employee Routes

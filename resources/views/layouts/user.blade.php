@@ -179,6 +179,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('user.tickets.index') }}"
+                                class="nav-link {{ request()->routeIs('user.tickets.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-headset text-danger"></i>
+                                <p>Tiket Saya</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('profile.edit') }}"
                                 class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-cog text-secondary"></i>
