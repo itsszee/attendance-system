@@ -101,7 +101,7 @@
                 <p class="mb-0" style="opacity:0.8;">Pantau dan kelola semua laporan kendala Anda di sini.</p>
             </div>
             <a href="{{ route('user.tickets.create') }}" class="btn-create d-inline-flex align-items-center gap-2">
-                <i class="fas fa-plus-circle"></i> Buat Tiket Baru
+                <i class="fas fa-plus-circle mr-2"></i> Buat Tiket Baru
             </a>
         </div>
     </div>

@@ -72,7 +72,6 @@
     </div>
 </div>
 
-{{-- Summary Cards --}}
 <div class="row mb-4">
     <div class="col-6 col-md-3 mb-3">
         <div class="stat-card" style="background:linear-gradient(135deg,#6366f1,#4f46e5);">
@@ -260,7 +259,8 @@
 
     // Rating Distribution
     const ratingLabels = ['1 ⭐', '2 ⭐⭐', '3 ⭐⭐⭐', '4 ⭐⭐⭐⭐', '5 ⭐⭐⭐⭐⭐'];
-    const ratingData   = [1,2,3,4,5].map(s => {{ json_encode($ratingDistribution) }}[s] || 0);
+    const ratingDist   = @json($ratingDistribution);
+    const ratingData   = [1, 2, 3, 4, 5].map(s => ratingDist[String(s)] || 0);
 
     new Chart(document.getElementById('ratingChart'), {
         type: 'doughnut',

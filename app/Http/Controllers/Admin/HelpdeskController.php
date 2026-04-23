@@ -83,7 +83,7 @@ class HelpdeskController extends Controller
             'message' => 'required|string|min:2',
         ]);
 
-        // Catat first_response_at jika belum pernah dibalas
+        
         if (! $ticket->first_response_at) {
             $ticket->update([
                 'first_response_at' => now(),
@@ -134,16 +134,19 @@ class HelpdeskController extends Controller
      */
     public function dashboard()
     {
-        // Card summary
+        // Avg response time 
+        $ticketsWithResponse = Ticket::whereNotNull('first_response_at')->get(['created_at', 'first_response_at']);
+        $avgResponseMinutes  = $ticketsWithResponse->count()
+            ? $ticketsWithResponse->avg(fn($t) => $t->created_at->diffInMinutes($t->first_response_at))
+            : null;
+
         $summary = [
-            'total'       => Ticket::count(),
-            'open'        => Ticket::open()->count(),
-            'in_progress' => Ticket::inProgress()->count(),
-            'closed'      => Ticket::closed()->count(),
-            'avg_response'=> Ticket::whereNotNull('first_response_at')
-                ->selectRaw('AVG(TIMESTAMPDIFF(MINUTE, created_at, first_response_at)) as avg')
-                ->value('avg'),
-            'avg_rating'  => SatisfactionRating::avg('score'),
+            'total'        => Ticket::count(),
+            'open'         => Ticket::open()->count(),
+            'in_progress'  => Ticket::inProgress()->count(),
+            'closed'       => Ticket::closed()->count(),
+            'avg_response' => $avgResponseMinutes,
+            'avg_rating'   => SatisfactionRating::avg('score'),
         ];
 
         // Rata-rata response time per operator
@@ -166,24 +169,39 @@ class HelpdeskController extends Controller
                     'name'         => $user->name,
                     'total_handled'=> $user->total_handled,
                     'avg_response' => $avgResponse ? round($avgResponse, 1) : '-',
-                    'avg_rating'   => $avgRating  ? round($avgRating, 1)   : '-',
+                    'avg_rating'   => $avgRating   ? round($avgRating, 1)   : '-',
                 ];
             })
             ->sortByDesc('total_handled')
             ->values();
 
-        // Distribusi rating untuk chart
-        $ratingDistribution = SatisfactionRating::selectRaw('score, COUNT(*) as total')
+        // Distribusi rating 
+        $rawRating = SatisfactionRating::selectRaw('score, COUNT(*) as total')
             ->groupBy('score')
             ->orderBy('score')
             ->pluck('total', 'score');
 
-        // Tiket per bulan (6 bulan terakhir) untuk chart
-        $ticketsPerMonth = Ticket::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as total')
-            ->where('created_at', '>=', now()->subMonths(6))
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('total', 'month');
+        
+        $ratingDistribution = collect(range(1, 5))->mapWithKeys(
+            fn($s) => [$s => (int) ($rawRating[$s] ?? 0)]
+        );
+
+        // Tiket per bulan (6 bulan terakhir)
+        $sixMonthsAgo = now()->startOfMonth()->subMonths(5);
+        $rawTickets   = Ticket::where('created_at', '>=', $sixMonthsAgo)
+            ->get(['created_at'])
+            ->groupBy(fn($t) => $t->created_at->format('Y-m'))
+            ->map->count();
+
+        // Buat array 6 bulan berurutan dengan label bulan yang terbaca
+        $bulanId = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+        $ticketsPerMonth = collect();
+        for ($i = 5; $i >= 0; $i--) {
+            $dt    = now()->subMonths($i);
+            $month = $dt->format('Y-m');
+            $label = $bulanId[(int)$dt->format('n') - 1] . ' ' . $dt->format('Y');
+            $ticketsPerMonth[$label] = $rawTickets[$month] ?? 0;
+        }
 
         return view('admin.helpdesk.dashboard', compact(
             'summary',
